@@ -1,0 +1,177 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <title>Doctor's homepage</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/3.6.95/css/materialdesignicons.css"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<!-- Include the above in your HEAD tag -->
+
+<body>
+
+    <h1>Welcome, Dr. {{ name }}</h1>
+    <div class="main">
+        <div class="row">
+            <div class="col-md-4">
+                <a href="#">
+                <div class="one">
+                    <div class="px-3 pb-4">
+                        <div><img src="https://img.icons8.com/bubbles/50/000000/blond-short-hair-lady-with-blue-glasses.png" width="15" class="pic1" /><img src="https://img.icons8.com/bubbles/50/000000/girl-with-chemical-test-tube.png" width="22" class="pic2" /></div>
+                        <div><img src="https://img.icons8.com/bubbles/100/000000/girl-with-glasses-art-palette.png" width="65" /></div>
+                        <div><img src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-girl-gem.png" width="16" class="pic3" /><img src="https://img.icons8.com/bubbles/50/000000/girl-and-playing-card.png" width="16" class="pic4" /></div>
+                        <div>
+                            <h4 class="project">SEARCH AND FIND </h4>
+                        </div>
+                        <div>
+                            <p class="quote">Find out available Hospitals,Blood banks and Doctors</p>
+                        </div>
+                    </div>
+                </div>
+                 </a>
+                <div class="pt-2">
+                    <a href="">
+                    <div class="two">
+                        <div class="d-flex justify-content-end px-3 pt-1"><i class="mdi mdi-star-outline pr-1 star"></i><i class="mdi mdi-dots-horizontal dot"></i></div>
+                        <div class="px-3">
+                            <div class="round"><img src="https://img.icons8.com/cute-clipart/64/000000/edit.png" width="23" class="imgfix" /></div>
+                        </div>
+                        <div class="px-3 pt-3">
+                            <h3 class="name">EDIT PROFILE</h3>
+                            <p class="quote2">Modify your personal information as you like</p>
+                        </div>
+                        <div class="d-flex justify-content-start px-3 align-items-center"> <i class="mdi mdi-view-comfy task"></i> <span class="quote2 pl-2"></span> </div>
+                        <div class="d-flex justify-content-between px-3 align-items-center pb-3">
+                            <div class="d-flex justify-content-start align-items-center"> <i class="mdi mdi-calendar-clock date"></i> <span class="quote2 pl-2"></span> </div>
+                            <div class="d-flex justify-content-end"> <img src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-girl-musical-notes.png" width="20" class="img1" /> <img src="https://img.icons8.com/bubbles/50/000000/girl-and-playing-card.png" width="20" class="img2" /> <img src="https://img.icons8.com/bubbles/50/000000/short-hair-girl-question-mark.png" width="20" class="img3" /> </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="">
+                    <a href="">
+                    <div class="two">
+                        <div class="d-flex justify-content-end px-3 pt-1"><i class="mdi mdi-star-outline pr-1 star"></i><i class="mdi mdi-dots-horizontal dot"></i></div>
+                        <div class="px-3">
+                            <div class="round"><img src="https://img.icons8.com/bubbles/100/000000/girl-with-glasses-art-palette.png" width="23" /></div>
+                        </div>
+                        <div class="px-3 pt-3">
+                            <h3 class="name">VIEW APPOINTMENTS</h3>
+                            <p class="quote2">View the patients you have to meet</p>
+                        </div>
+                        <div class="d-flex justify-content-start px-3 align-items-center"> <i class="mdi mdi-view-comfy task"></i> <span class="quote2 pl-2"></span> </div>
+                        <div class="d-flex justify-content-between px-3 align-items-center pb-3">
+                            <div class="d-flex justify-content-start align-items-center"> <i class="mdi mdi-calendar-clock date"></i> <span class="quote2 pl-2"></span> </div>
+                            <div class="d-flex justify-content-end"> <img src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-girl-musical-notes.png" width="20" class="img1" /> <img src="https://img.icons8.com/bubbles/50/000000/girl-and-playing-card.png" width="20" class="img2" /> <img src="https://img.icons8.com/bubbles/50/000000/short-hair-girl-question-mark.png" width="20" class="img3" /> </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="pt-2">
+                    <a href="{% url 'doctor_blood_bank_appointment' %}">
+                    <div class="two">
+                        <div class="d-flex justify-content-end px-3 pt-1"><i class="mdi mdi-star-outline pr-1 star"></i><i class="mdi mdi-dots-horizontal dot"></i></div>
+                        <div class="px-3">
+                            <div class="round"><img src="https://img.icons8.com/cute-clipart/64/000000/doctor-male.png" width="23" class="imgfix" /></div>
+                        </div>
+                        <div class="px-3 pt-3">
+                            <h3 class="name">BLOOD BANK APPOINTMENT</h3>
+                            <p class="quote2">Appoint available blood bank suitable with your needed blood group</p>
+                        </div>
+                        <div class="d-flex justify-content-start px-3 align-items-center"> <i class="mdi mdi-view-comfy task"></i> <span class="quote2 pl-2"></span> </div>
+                        <div class="d-flex justify-content-between px-3 align-items-center pb-3">
+                            <div class="d-flex justify-content-start align-items-center"> <i class="mdi mdi-calendar-clock date"></i> <span class="quote2 pl-2"></span> </div>
+                            <div class="d-flex justify-content-end"> <img src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-girl-musical-notes.png" width="20" class="img1" /> <img src="https://img.icons8.com/bubbles/50/000000/girl-and-playing-card.png" width="20" class="img2" /> <img src="https://img.icons8.com/bubbles/50/000000/short-hair-girl-question-mark.png" width="20" class="img3" /> </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="pt-2">
+                    <a href="">
+                    <div class="two">
+                        <div class="d-flex justify-content-end px-3 pt-1"><i class="mdi mdi-star-outline pr-1 star"></i><i class="mdi mdi-dots-horizontal dot"></i></div>
+                        <div class="px-3">
+                            <div class="round"><img src="https://img.icons8.com/cute-clipart/64/000000/doctor-male.png" width="23" class="imgfix" /></div>
+                        </div>
+                        <div class="px-3 pt-3">
+                            <h3 class="name">Change Schedule</h3>
+                            <p class="quote2">Change Schedule Here</p>
+                        </div>
+                        <div class="d-flex justify-content-start px-3 align-items-center"> <i class="mdi mdi-view-comfy task"></i> <span class="quote2 pl-2"></span> </div>
+                        <div class="d-flex justify-content-between px-3 align-items-center pb-3">
+                            <div class="d-flex justify-content-start align-items-center"> <i class="mdi mdi-calendar-clock date"></i> <span class="quote2 pl-2"></span> </div>
+                            <div class="d-flex justify-content-end"> <img src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-girl-musical-notes.png" width="20" class="img1" /> <img src="https://img.icons8.com/bubbles/50/000000/girl-and-playing-card.png" width="20" class="img2" /> <img src="https://img.icons8.com/bubbles/50/000000/short-hair-girl-question-mark.png" width="20" class="img3" /> </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="">
+                    <a href="">
+                    <div class="two">
+                        <div class="d-flex justify-content-end px-3 pt-1"><i class="mdi mdi-star-outline pr-1 star"></i><i class="mdi mdi-dots-horizontal dot"></i></div>
+                        <div class="px-3">
+                            <div class="round"><img src="https://img.icons8.com/cute-clipart/64/000000/planner.png" width="23" class="imgfix" /></div>
+                        </div>
+                        <div class="px-3 pt-3">
+                            <h3 class="name">CALENDAR</h3>
+                            <p class="quote2">View all schedules and all vacant times</p>
+                        </div>
+                        <div class="d-flex justify-content-start px-3 align-items-center"> <i class="mdi mdi-view-comfy task"></i> <span class="quote2 pl-2"></span> </div>
+                        <div class="d-flex justify-content-between px-3 align-items-center pb-3">
+                            <div class="d-flex justify-content-start align-items-center"> <i class="mdi mdi-calendar-clock date"></i> <span class="quote2 pl-2"></span> </div>
+                            <div class="d-flex justify-content-end"> <img src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-girl-musical-notes.png" width="20" class="img1" /> <img src="https://img.icons8.com/bubbles/50/000000/girl-and-playing-card.png" width="20" class="img2" /> <img src="https://img.icons8.com/bubbles/50/000000/short-hair-girl-question-mark.png" width="20" class="img3" /> </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="pt-2">
+                    <a href="">
+                    <div class="two">
+                        <div class="d-flex justify-content-end px-3 pt-1"><i class="mdi mdi-star-outline pr-1 star"></i><i class="mdi mdi-dots-horizontal dot"></i></div>
+                        <div class="px-3">
+                            <div class="round"><img src="https://img.icons8.com/dusk/64/000000/blockchain-new-logo.png" width="23" class="imgfix" /></div>
+                        </div>
+                        <div class="px-3 pt-3">
+                            <h3 class="name">RECORDS</h3>
+                            <p class="quote2">View your previous treatment records and ratings</p>
+                        </div>
+                        <div class="d-flex justify-content-start px-3 align-items-center"> <i class="mdi mdi-view-comfy task"></i> <span class="quote2 pl-2"></span> </div>
+                        <div class="d-flex justify-content-between px-3 align-items-center pb-3">
+                            <div class="d-flex justify-content-start align-items-center"> <i class="mdi mdi-calendar-clock date"></i> <span class="quote2 pl-2"></span> </div>
+                            <div class="d-flex justify-content-end"> <img src="https://img.icons8.com/bubbles/50/000000/short-curly-hair-girl-musical-notes.png" width="20" class="img1" /> <img src="https://img.icons8.com/bubbles/50/000000/girl-and-playing-card.png" width="20" class="img2" /> <img src="https://img.icons8.com/bubbles/50/000000/short-hair-girl-question-mark.png" width="20" class="img3" /> </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+                <div class="pt-2">
+                    <a href="">
+                    <div class="two">
+                        <div class="d-flex justify-content-end px-3 pt-1"><i class="mdi mdi-star-outline pr-1 star"></i><i class="mdi mdi-dots-horizontal dot"></i></div>
+                        <div class="px-3">
+                            <div class="round"><img src="https://img.icons8.com/plasticine/100/000000/logout-rounded-down.png" width="23" class="imgfix" /></div>
+                        </div>
+                        <div class="px-3 pt-3">
+                            <h3 class="name">Log Out</h3>
+                            <p class="quote2">Log Out of Your Session</p>
+                        </div>
+                        <div class="d-flex justify-content-start px-3 align-items-center"> <i class="mdi mdi-view-comfy task"></i> <span class="quote2 pl-2"></span> </div>
+
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

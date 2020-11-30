@@ -1,0 +1,39 @@
+{% load static %}
+
+<html>
+    <head>
+
+        <title>
+            Log In or Sign Up
+        </title>
+        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    </head>
+    <body>
+
+        <div>Welcome for Visiting </div>
+        <h1>Sign In or  <a href="{% url 'signup' %}">Sign Up</a> </h1>
+
+
+        <form action="submit" method="post">
+            {% csrf_token %}
+            <h1>Username:
+            <label for="username" class="block"></label><br>
+            <input type="text" id="username" name="username" class="block"></h1><br>
+            <h1>Password:
+            <label for="pass"></label><br>
+            <input type="password" id="pass" name="pass" class="block"></h1><br>
+            <h1>Usertype:
+            <label for="usertype"></label><br>
+            <select id="usertype" name="usertype" class="block">
+                <option selected disabled>Select User Type</option>
+                <option value="customer" class="block">Customer</option>
+                <option value="admin" class="block">Admin</option>
+            </select>
+            </h1><br>
+            <h1>
+               <button class="block" type="submit">Submit</button>
+
+            </h1>
+        </form>
+    </body>
+</html>
