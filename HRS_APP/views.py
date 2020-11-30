@@ -22,7 +22,7 @@ def demo(request):
 
 # homepage URLs
 def admin_home(request):
-    #return render(request, "homepage/DoctorHome.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
+    #return render(request, "add html file", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
     return HttpResponse("add admin_home")
 
 
@@ -37,6 +37,7 @@ def submit(request):
     username = request.POST['username']
     password = request.POST['pass']
     usertype = request.POST['usertype']
+   
     
     dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='xe')
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
@@ -57,7 +58,7 @@ def submit(request):
             user_info['pk'] = return_id
             user_info['f_name'] = return_f_name
             user_info['l_name'] = return_l_name
-            #user_info['email'] = email
+           
             user_info['usertype'] = usertype
             decoded_password=ED_Operation.Encrypt_Decrypt_Passwords(return_password).decryptPassword()
            
@@ -70,19 +71,20 @@ def submit(request):
 
     elif usertype == "customer":
         statement = "SELECT CUSTOMER_ID, PASSWORD, FIRST_NAME, LAST_NAME from HRS_OURDATABASE.CUSTOMER WHERE USERNAME=" + "\'" + username + "\'"
-
+       
         c.execute(statement)
         if c:
             x = c.fetchone()
+            
             return_id = x[0]
             return_password = x[1]
             return_f_name = x[2]
             return_l_name = x[3]
 
-            #user_info['pk'] = return_id
+            user_info['pk'] = return_id
             user_info['f_name'] = return_f_name
             user_info['l_name'] = return_l_name
-            #user_info['email'] = email
+           
             user_info['usertype'] = "customer"
 
             decoded_password=ED_Operation.Encrypt_Decrypt_Passwords(return_password).decryptPassword()
@@ -103,47 +105,33 @@ def signupSubmit(request):
     firstname = request.POST['fname']
     lastname = request.POST['lname']
     email = request.POST['email']
-    #phone = request.POST['phone']
+    
+   
     
     city =request.POST['city']
     country=request.POST['country']
-    username=request.POST.get('username',False)
+    username=request.POST['username']
 
-    encoded_password = request.POST['pass']
+    input_password = request.POST['pass']
 
     confirm_in = request.POST['cpass']
+    if input_password != confirm_in:
+        return HttpResponse("password and confirm password does not match!")
 
-    #encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(input_password).encryptPassword()
+    encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(input_password).encryptPassword()
     if usertype == 'admin':
         dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
-        c2 = conn.cursor()
-        # Check here 
+        
+        
+        
         statement = "INSERT INTO HRS_OURDATABASE.ADMIN(FIRST_NAME, LAST_NAME, GMAIL,CITY,COUNTRY,USERNAME,PASSWORD) VALUES (" + "\'" + firstname + \
                     "\', " + "\'" + lastname + "\'," + "\'" + email + "\', " + "\'" +city + "\', " + "\'" + country + "\'," + "\'" + username + "\', " + "\'" +encoded_password+ "\'" + ")"
         
         c.execute(statement)
         conn.commit()
-        statement = "SELECT ADMIN_ID, FIRST_NAME, LAST_NAME from HRS_OURDATABASE.ADMIN WHERE USERNAME=" + "\'" + username+ "\'"
-        c2.execute(statement)
-       
-        if c2:
-            x = c2.fetchone()
-            return_id = x[0]
-            return_f_name = x[1]
-            return_l_name = x[2]
 
-            user_info['pk'] = return_id
-            user_info['f_name'] = return_f_name
-            user_info['l_name'] = return_l_name
-            #user_info['email'] = email
-            user_info['type'] = "admin"
-            #return redirect("doctor_home")
-            
-            #return HttpResponse("Go to adminhome or login page")
-        #else:
-            #return HttpResponse("Error")
     elif usertype == 'customer':
         dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
@@ -152,29 +140,10 @@ def signupSubmit(request):
                     "\', " + "\'" + lastname + "\'," + "\'" + email + "\', " + "\'" + city + "\', " + "\'" +country+ "\'," + "\'" + username + "\', " + "\'" +encoded_password+ "\'" + ")"
         c.execute(statement)
         conn.commit()
+        
+    return redirect("login")
 
-        c2 = conn.cursor()
-
-        statement = "SELECT CUSTOMER_ID, FIRST_NAME, LAST_NAME from HRS_OUTDATABASE WHERE USERNAME=" + "\'" + username + "\'"
-
-        c2.execute(statement)
-        if c2:
-            x = c2.fetchone()
-            return_id = x[0]
-            return_f_name = x[1]
-            return_l_name = x[2]
-
-            user_info['pk'] = return_id
-            user_info['f_name'] = return_f_name
-            user_info['l_name'] = return_l_name
-            #user_info['email'] = email
-            user_info['type'] = "customer"
-
-            #return redirect("user_home")
-            #return HttpResponse("Go to customer login page")
-        #else:
-           #return HttpResponse("Error")
-    return HttpResponse("complete registration")
+       
         
 
 
