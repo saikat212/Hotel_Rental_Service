@@ -27,7 +27,9 @@ urlpatterns = [
     path('', HRS_APP_views.login, name='login'),
 
 
-    #path('signupSubmit',HRS_APP_views.signupSubmit, name='submit'),
+    #Customer Page Part
+    path('customer_profile',HRS_APP_views.customer_profile_details, name='profile'),
+
    
 
 ]
