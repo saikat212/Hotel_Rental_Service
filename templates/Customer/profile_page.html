@@ -1,0 +1,20 @@
+{% extends 'layouts.html' %}
+
+{% block title_name %}
+Customer Profile Page
+{% endblock  %}
+
+
+{% block content %}
+
+<div>
+{% for info in customer_all_info %}
+<p class="text-center">First Name : {{info.customer_f_name}}</p><br>
+<p class="text-center">Last Name : {{info.customer_l_name}}</p><br>
+<p class="text-center">Gmail : {{info.customer_gmail}}</p><br>
+{% endfor %}
+</div><br><br>
+
+
+
+{% endblock  %}}

@@ -1,0 +1,49 @@
+{% extends 'layouts.html' %}
+
+{% block title_name %}
+CustomerHome
+{% endblock  %}
+
+
+{% block content %}
+
+<div>
+
+<p class="text-center">Welcome: {{name}}</p><br>
+
+
+</div><br>
+<div>
+
+<form action="" method="post">
+            {% csrf_token %}
+            <h6>Enter Your City Name:
+            <label for="cityname" class="block"></label>
+            <input type="text" id="cityname" name="cityname" class="block"></h6><br>
+            
+            <h6>Enter Your Country Name:
+            <label for="countryname" class="block"></label>
+            <input type="text" id="countryname" name="countryname" class="block"></h6><br>
+            </div>
+            <h6>
+            <button class="block" type="submit">Submit</button>
+            </h6><br>
+            
+        </form>
+
+</div><br><br>
+<div>
+<a href="{% url 'profile' %}">My profile</a>
+</div>
+<div>
+<a href="">My Booking Status</a>
+</div>
+<div>
+<a href="">Change Password</a>
+</div>
+<div>
+
+<a href="">Logout</a>
+</div>
+
+{% endblock  %}}
