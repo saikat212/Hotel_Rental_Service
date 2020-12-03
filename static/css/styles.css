@@ -1,149 +1,127 @@
-body {
-  background-color: #eee
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-.main {
-  display: flex;
-  justify-content: center;
-  height: 100vh;
-  align-items: center;
-  background-color: #f6f6f6
+nav {
+    display: flex;
+    height: 80px;
+    width: 100%;
+    background: #1b1b1b;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px 0 100px;
+    flex-wrap: wrap;
 }
 
-.one {
-  width: 270px;
-  background-color: #000;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+nav .logo {
+    color: #fff;
+    font-size: 35px;
+    font-weight: 600;
 }
 
-.pic1 {
-  position: relative;
-  right: 22px;
-  top: 23px
+nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
 }
 
-.pic2 {
-  position: relative;
-  left: 25px;
-  top: 17px
+nav ul li {
+    margin: 0 5px;
 }
 
-.pic3 {
-  position: relative;
-  right: 13px;
-  bottom: 18px
+nav ul li a {
+    color: #f2f2f2;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
 }
 
-.pic4 {
-  position: relative;
-  left: 14px;
-  bottom: 21px
+nav ul li a.active,
+nav ul li a:hover {
+    color: #111;
+    background: #fff;
 }
 
-.project {
-  text-align: center;
-  font-size: 22px;
-  font-weight: 600;
-  color: #fd4040
+nav .menu-btn i {
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+    display: none;
 }
 
-.quote {
-  text-align: center;
-  font-size: 12px;
-  font-weight: 400;
-  color: #fff
+input[type="checkbox"] {
+    display: none;
 }
 
-.two {
-  width: 270px;
-  background-color: #fff;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+@media (max-width: 1000px) {
+    nav {
+        padding: 0 40px 0 50px;
+    }
 }
 
-.star {
-  font-size: 20px !important;
-  color: #b1b4b7
+@media (max-width: 920px) {
+    nav .menu-btn i {
+        display: block;
+    }
+    #click:checked~.menu-btn i:before {
+        content: "\f00d";
+    }
+    nav ul {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        background: #111;
+        height: 100vh;
+        width: 100%;
+        text-align: center;
+        display: block;
+        transition: all 0.3s ease;
+    }
+    #click:checked~ul {
+        left: 0;
+    }
+    nav ul li {
+        width: 100%;
+        margin: 40px 0;
+    }
+    nav ul li a {
+        width: 100%;
+        margin-left: -100%;
+        display: block;
+        font-size: 20px;
+        transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    #click:checked~ul li a {
+        margin-left: 0px;
+    }
+    nav ul li a.active,
+    nav ul li a:hover {
+        background: none;
+        color: cyan;
+    }
 }
 
-.dot {
-  font-size: 20px !important;
-  color: #b1b4b7
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: -1;
+    width: 100%;
+    padding: 0 30px;
+    color: #1b1b1b;
 }
 
-.round {
-  border-radius: 50%;
-  background-color: #eee;
-  width: 33px;
-  height: 33px;
-  margin-bottom: -10px;
-  align-items: center;
-  justify-content: center
-}
-
-.name {
-  font-size: 22px;
-  color: #464e56;
-  font-weight: 600;
-  text-align: left
-}
-
-.quote2 {
-  font-size: 12px;
-  font-weight: 500;
-  color: #868e94;
-  text-align: left
-}
-
-.img1 {
-  position: relative;
-  left: 20px;
-  z-index: 28;
-  border: 0.5px solid #6ebde4;
-  border-radius: 50%;
-  background-color: #bcd8e6
-}
-
-.img2 {
-  position: relative;
-  left: 10px;
-  z-index: 29;
-  border: 0.5px solid #6ebde4;
-  border-radius: 50%;
-  background-color: #bcd8e6
-}
-
-.img3 {
-  z-index: 30;
-  border: 0.5px solid #6ebde4;
-  border-radius: 50%;
-  background-color: #bcd8e6
-}
-
-.task {
-  color: #727475
-}
-
-.date {
-  color: #727475
-}
-
-.imgfix {
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  position: relative;
-  top: 2px
-}
-
-.noBorder{
-  border: none;
+.content div {
+    font-size: 40px;
+    font-weight: 700;
 }

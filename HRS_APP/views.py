@@ -5,9 +5,11 @@ import cx_Oracle
 import HelperClass.Encrypt_Decrypt_Pass as ED_Operation
 
 
-
 # login
 user_info = {}  # holds user data across pages
+customer_info_list =[]
+admin_info_list =[]
+
 
 
 # Create your views here.
@@ -22,13 +24,12 @@ def demo(request):
 
 # homepage URLs
 def admin_home(request):
-    #return render(request, "add html file", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
-    return HttpResponse("add admin_home")
-
+    return render(request, "Homepage/AdminHomePage.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
+    
 
 def customer_home(request):
-    #return render(request, "homepage/UserHome.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
-    return HttpResponse("add customer_home")
+    return render(request, "Homepage/CustomerHomePage.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
+    
 
 
  # log in
@@ -46,51 +47,79 @@ def submit(request):
 
     # TODO: connect database and verify
     if usertype == "admin":
-        statement = "SELECT ADMIN_ID,PASSWORD,FIRST_NAME, LAST_NAME from HRS_OURDATABASE.ADMIN WHERE USERNAME=" + "\'" + username + "\'"
+        statement = "SELECT ADMIN_ID,PASSWORD,FIRST_NAME, LAST_NAME,GMAIL,CITY,COUNTRY from HRS_OURDATABASE.ADMIN WHERE USERNAME=" + "\'" + username + "\'"
         c.execute(statement)
         if c:
             x = c.fetchone()
-            return_id = x[0]
+            admin_id = x[0]
             return_password = x[1]
-            return_f_name = x[2]
-            return_l_name = x[3]
+            admin_f_name = x[2]
+            admin_l_name = x[3]
+            admin_gmail=x[4]
+            admin_city=x[5]
+            admin_country=x[6]
+            admin_username=username
 
-            user_info['pk'] = return_id
-            user_info['f_name'] = return_f_name
-            user_info['l_name'] = return_l_name
-           
-            user_info['usertype'] = usertype
+
+            user_info['pk'] = admin_id
+            user_info['f_name'] = admin_f_name
+            user_info['l_name'] = admin_l_name
+            user_info['gmail'] = admin_gmail
+            user_info['city'] = admin_city
+            user_info['country'] = admin_country
+            user_info['username'] = admin_gmail
+            
+
+
+      
+          
             decoded_password=ED_Operation.Encrypt_Decrypt_Passwords(return_password).decryptPassword()
+            admin_password=decoded_password
+            user_info['admin_password'] = admin_password
            
             if decoded_password == password:
-                return HttpResponse("Need to add admin_homepage")
+                row={'admin_id':admin_id,'admin_f_name':admin_f_name,'admin_l_name':admin_l_name,'admin_gmail':admin_gmail,'admin_city':admin_city,'admin_country':admin_country,'admin_username':admin_username,'admin_password':admin_password}
+                
+                admin_info_list.append(row)
+                return render(request, "Homepage/AdminHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
+                
             else:
                 return HttpResponse("Wrong Pass")
         else:
             return HttpResponse("Database Error or You don't exist")
 
     elif usertype == "customer":
-        statement = "SELECT CUSTOMER_ID, PASSWORD, FIRST_NAME, LAST_NAME from HRS_OURDATABASE.CUSTOMER WHERE USERNAME=" + "\'" + username + "\'"
+        statement = "SELECT CUSTOMER_ID, PASSWORD, FIRST_NAME, LAST_NAME,GMAIL,CITY,COUNTRY from HRS_OURDATABASE.CUSTOMER WHERE USERNAME=" + "\'" + username + "\'"
        
         c.execute(statement)
         if c:
             x = c.fetchone()
             
-            return_id = x[0]
+            customer_id = x[0]
             return_password = x[1]
-            return_f_name = x[2]
-            return_l_name = x[3]
-
-            user_info['pk'] = return_id
-            user_info['f_name'] = return_f_name
-            user_info['l_name'] = return_l_name
-           
-            user_info['usertype'] = "customer"
+            customer_f_name = x[2]
+            customer_l_name = x[3]
+            customer_gmail=x[4]
+            customer_city=x[5]
+            customer_country=x[6]
+            customer_username=username
+            user_info['pk'] = customer_id 
+            user_info['f_name'] = customer_f_name
+            user_info['l_name'] = customer_l_name
+            user_info['gmail'] = customer_gmail
+            user_info['city'] = customer_city
+            user_info['country'] = customer_country
+            user_info['username'] =customer_gmail
 
             decoded_password=ED_Operation.Encrypt_Decrypt_Passwords(return_password).decryptPassword()
+            customer_password=decoded_password
+            user_info['customer_password'] = customer_password
 
             if decoded_password == password:
-                return HttpResponse("Need to add customer_homepage")
+                row={'customer_id':customer_id,'customer_f_name':customer_f_name,'customer_l_name':customer_l_name,'customer_gmail':customer_gmail,'customer_city':customer_city,'customer_country':customer_country,'customer_username':customer_username,'customer_password':customer_password}
+                customer_info_list.append(row)
+                return render(request, "Homepage/CustomerHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
+                
             else:
                 return HttpResponse("Wrong Pass")
         else:
@@ -126,6 +155,7 @@ def signupSubmit(request):
         
         
         
+        
         statement = "INSERT INTO HRS_OURDATABASE.ADMIN(FIRST_NAME, LAST_NAME, GMAIL,CITY,COUNTRY,USERNAME,PASSWORD) VALUES (" + "\'" + firstname + \
                     "\', " + "\'" + lastname + "\'," + "\'" + email + "\', " + "\'" +city + "\', " + "\'" + country + "\'," + "\'" + username + "\', " + "\'" +encoded_password+ "\'" + ")"
         
@@ -142,6 +172,16 @@ def signupSubmit(request):
         conn.commit()
         
     return redirect("login")
+#CustomerHome 
+def customer_profile_details(request):
+    return render(request,"Customer/profile_page.html",{'customer_all_info':customer_info_list})
+
+
+    
+
+
+
+
 
        
         
