@@ -1,20 +1,54 @@
-{% extends 'layouts.html' %}
+{% extends 'Homepage/CustomerHomePage.html' %}
+
 
 {% block title_name %}
-Customer Profile Page
-{% endblock  %}
-
+    Customer Profile Page
+ {% endblock %}
 
 {% block content %}
 
 <div>
-{% for info in customer_all_info %}
-<p class="text-center">First Name : {{info.customer_f_name}}</p><br>
-<p class="text-center">Last Name : {{info.customer_l_name}}</p><br>
-<p class="text-center">Gmail : {{info.customer_gmail}}</p><br>
-{% endfor %}
-</div><br><br>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">Your Profile Information</h1>
+  </div>
+</div>
+
+<div>
+<form>
+  <div class="form-group row">
+    <label for="colFormLabel" class="col-sm-2 col-form-label">  First Name </label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <label for="colFormLabel" class="col-sm-2 col-form-label">Last Name</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+    </div>
+  </div>
+    <div class="form-group row">
+    <label for="colFormLabel" class="col-sm-2 col-form-label">Gmail</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+    </div>
+  </div>
+    <div class="form-group row">
+    <label for="colFormLabel" class="col-sm-2 col-form-label">Username</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+    </div>
+  </div>
+
+   <button class="block" type="submit">Update</button>
+            </h1><br>
+            
+</form>
+
+ 
+           
+</div>
 
 
-
-{% endblock  %}}
+{% endblock %}

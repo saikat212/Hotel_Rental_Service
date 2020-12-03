@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 import cx_Oracle
 
 import HelperClass.Encrypt_Decrypt_Pass as ED_Operation
-#changing
+
 
 # login
 user_info = {}  # holds user data across pages
@@ -116,8 +116,8 @@ def submit(request):
             user_info['customer_password'] = customer_password
 
             if decoded_password == password:
-                #row={'customer_id':customer_id,'customer_f_name':customer_f_name,'customer_l_name':customer_l_name,'customer_gmail':customer_gmail,'customer_city':customer_city,'customer_country':customer_country,'customer_username':customer_username,'customer_password':customer_password}
-                #customer_info_list.append(row)
+                row={'customer_id':customer_id,'customer_f_name':customer_f_name,'customer_l_name':customer_l_name,'customer_gmail':customer_gmail,'customer_city':customer_city,'customer_country':customer_country,'customer_username':customer_username,'customer_password':customer_password}
+                customer_info_list.append(row)
                 return render(request, "Homepage/CustomerHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
                 
             else:
@@ -175,6 +175,7 @@ def signupSubmit(request):
 #CustomerHome 
 def customer_profile_details(request):
     return render(request,"Customer/profile_page.html",{'customer_all_info':customer_info_list})
+
 
     
 
