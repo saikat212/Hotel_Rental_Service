@@ -14,30 +14,32 @@
 </div>
 
 <div>
-<form>
+<form action="update_customer_profile" method="post">
+
+{% csrf_token %}
   <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">  First Name </label>
+    <label for="fname" class="col-sm-2 col-form-label">  First Name </label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+      <input type="text" name="fname" class="form-control" id="fname" value="{{first_name}}" >
     </div>
   </div>
 
   <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Last Name</label>
+    <label for="lname" class="col-sm-2 col-form-label">Last Name</label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+      <input type="text" name="lname"  class="form-control" id="lname" value="{{last_name}}">
     </div>
   </div>
     <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Gmail</label>
+    <label for="G" class="col-sm-2 col-form-label">Gmail</label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+      <input type="email" name="gmail" class="form-control" id="G" value="{{gmail}}">
     </div>
   </div>
     <div class="form-group row">
-    <label for="colFormLabel" class="col-sm-2 col-form-label">Username</label>
+    <label for="UN" class="col-sm-2 col-form-label">Username</label>
     <div class="col-sm-10">
-      <input type="email" class="form-control" id="colFormLabel" placeholder="">
+      <input type="text" name="username" class="form-control" id="UN" value="{{username}}">
     </div>
   </div>
 
@@ -49,6 +51,5 @@
  
            
 </div>
-
 
 {% endblock %}
