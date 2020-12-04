@@ -19,16 +19,25 @@ from HRS_APP import views as HRS_APP_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('',HRS_APP_views.login, name='login'),
 
     path('submit',HRS_APP_views.submit, name='submit'),
     path('signup',HRS_APP_views.signup, name='signup'),
     path('signupSubmit',HRS_APP_views.signupSubmit, name='submit'),
 
-    path('', HRS_APP_views.login, name='login'),
+   
+    
 
 
     #Customer Page Part
+    path('HOME', HRS_APP_views.customer_home, name='customer_home'),
     path('customer_profile',HRS_APP_views.customer_profile_details, name='profile'),
+    path('customer_change_password',HRS_APP_views.customer_change_password, name='customer_change_password'),
+    path('update_your_password',HRS_APP_views.update_your_password, name='update_your_password'),
+    path('logout',HRS_APP_views.logout, name='logout'),
+    path('update_customer_profile',HRS_APP_views.update_customer_profile, name='update_customer_profile'),
+
+
 
    
 

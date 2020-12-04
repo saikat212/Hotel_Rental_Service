@@ -9,6 +9,7 @@ import HelperClass.Encrypt_Decrypt_Pass as ED_Operation
 user_info = {}  # holds user data across pages
 customer_info_list =[]
 admin_info_list =[]
+customer_info_dict={}
 
 
 
@@ -18,8 +19,7 @@ def login(request):
 
 def signup(request):
     return render(request, "auth/SignUp.html")
-def demo(request):
-    return render(request, "demo.html")
+
 
 
 # homepage URLs
@@ -109,15 +109,15 @@ def submit(request):
             user_info['gmail'] = customer_gmail
             user_info['city'] = customer_city
             user_info['country'] = customer_country
-            user_info['username'] =customer_gmail
+            user_info['username'] =customer_username
 
             decoded_password=ED_Operation.Encrypt_Decrypt_Passwords(return_password).decryptPassword()
             customer_password=decoded_password
             user_info['customer_password'] = customer_password
 
             if decoded_password == password:
-                row={'customer_id':customer_id,'customer_f_name':customer_f_name,'customer_l_name':customer_l_name,'customer_gmail':customer_gmail,'customer_city':customer_city,'customer_country':customer_country,'customer_username':customer_username,'customer_password':customer_password}
-                customer_info_list.append(row)
+                customer_info_dict={'customer_id':customer_id,'customer_f_name':customer_f_name,'customer_l_name':customer_l_name,'customer_gmail':customer_gmail,'customer_city':customer_city,'customer_country':customer_country,'customer_username':customer_username,'customer_password':customer_password}
+                customer_info_list.append(customer_info_dict)
                 return render(request, "Homepage/CustomerHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
                 
             else:
@@ -174,7 +174,103 @@ def signupSubmit(request):
     return redirect("login")
 #CustomerHome 
 def customer_profile_details(request):
-    return render(request,"Customer/profile_page.html",{'customer_all_info':customer_info_list})
+    
+    return render(request,"Customer/profile_page.html",{'first_name':user_info['f_name'],'last_name':user_info['l_name'],'gmail':user_info['gmail'],'username':user_info['username']})
+
+def update_customer_profile(request):
+    fname=request.POST['fname']
+    lname=request.POST['lname']
+    gmail=request.POST['gmail']
+    username=request.POST['username']
+    if fname != user_info['f_name']:
+        user_info['f_name']=fname
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET FIRST_NAME = " + "\'" + fname + "\'" + "WHERE CUSTOMER_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+    if lname != user_info['l_name']:
+
+        user_info['l_name']=lname
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET LAST_NAME = " + "\'" + lname + "\'" + "WHERE CUSTOMER_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+    if gmail != user_info['gmail']:
+
+        user_info['gmail']=gmail
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET GMAIL = " + "\'" + gmail + "\'" + "WHERE CUSTOMER_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+    
+    if username != user_info['username']:
+
+        user_info['username']=username
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET USERNAME = " + "\'" + username + "\'" + "WHERE CUSTOMER_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+
+    return redirect("profile") 
+
+def customer_change_password(request):
+    return render(request,"Customer/CustomerChangePassword.html",{'customer_password_from_database':user_info['customer_password']})
+def update_your_password(request):
+    current_password=request.POST['current_password']
+    new_password=request.POST['new_password']
+    confirm_password=request.POST['confirm_password']
+    if current_password==user_info['customer_password']:
+        if new_password==confirm_password:
+            new_encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(confirm_password).encryptPassword()
+
+            dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+            conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+            c = conn.cursor()
+
+            statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET PASSWORD = " + "\'" + new_encoded_password + "\'" + "WHERE CUSTOMER_ID = " + str(
+                user_info['pk'])
+
+            c.execute(statement)
+            conn.commit()
+            return render(request, "Homepage/CustomerHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
+        else:
+            return HttpResponse("Give similiar Password with new password")
+    else:
+        return HttpResponse("Provide correct password of previous")
+
+
+def logout(request):
+    user_info.clear()
+    return redirect("login")
+
 
 
     
