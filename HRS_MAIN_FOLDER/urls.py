@@ -23,8 +23,36 @@ urlpatterns = [
     path('submit',HRS_APP_views.submit, name='submit'),
     path('signup',HRS_APP_views.signup, name='signup'),
     path('signupSubmit',HRS_APP_views.signupSubmit, name='submit'),
+    #path('RoomListView', HRS_APP_views.RoomListView, name='RoomListView'),
+   ## path('admin/see_admin_details/', HRS_APP_views.see_admin_details, name='see_admin_details'),
+
+   #path('admin/edit_profile_details/', HRS_APP_views.admin_edit_profile, name='admin_edit_profile'),
 
     path('', HRS_APP_views.login, name='login'),
+    path('admin/logout', HRS_APP_views.logout, name='log_out'),
+
+    # ADMIN Page Part
+    path('HOME', HRS_APP_views.admin_home, name='admin_home'),
+    #path('admin_profile', HRS_APP_views.admin_profile_details, name='profile'),
+   # path('admin_change_password', HRS_APP_views.cadmin_change_password, name='customer_change_password'),
+   # path('update_your_password', HRS_APP_views.update_your_password, name='update_your_password'),
+   # path('logout', HRS_APP_views.logout, name='logout'),
+    #path('update_admin_profile', HRS_APP_views.update_customer_profile, name='update_customer_profile'),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     #Customer Page Part

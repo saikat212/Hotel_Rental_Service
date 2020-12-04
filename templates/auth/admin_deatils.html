@@ -1,0 +1,76 @@
+{% load static %}
+
+<html lang="en">
+
+
+<head>
+    <title>{{ firstname }}</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/profile_editor_css.css' %}">
+</head>
+
+<!------ Include the above in your HEAD tag ---------->
+
+<body>
+    <div class="container rounded bg-white mt-5 mb-5">
+        <div class="row">
+            <div class="col-md-3 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" src="{% static 'images/user.png' %}" width="128" height="128">
+                    <span> {{ firstname }} </span>
+                </div>
+            </div>
+            <div class="col-md-5 border-right">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">admin Profile</h4>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-6"><label class="labels">Name</label><h4>{{ firstname }}</h4></div>
+                        <div class="col-md-6"><label class="labels">Name</label><h4>{{ lastname }}</h4></div>
+
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">Phone</label><h4>{{ phone }}</h4></div>
+                        <div class="col-md-12"><label class="labels" >admin_city</label><h4>{{ admin_city }}</h4></div>
+                        <div class="col-md-12"><label class="labels">Email</label><h4>{{ email }}</h4></div>
+                        <div class="col-md-12"><label class="labels">country</label><h4>{{ country }}</h4></div>
+
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center experience"><span><h4>Appointments</h4></span></div><br>
+                    <br>
+                <div class="col-md-12">
+                        <label class="labels">Get An Appointment</label><br>
+                    </div>
+                    <div class="col-md-12"><label class="labels">Select Day</label>
+                        <select id="appointment_day" name = "appointment_day" class="form-control">
+                            <option selected disabled>Select Day </option>
+                            <option>Saturday</option>
+                            <option>Sunday</option>
+                            <option>Monday</option>
+                            <option>Tuesday</option>
+                        </select>
+                    </div>
+
+                     <div class="mt-5 text-center">
+                         <form action="see_doctors_of_specific_hospital" method="post">{% csrf_token %}
+                                <button type="submit" class="btn btn-danger wrn-btn">See Doctor List</button>
+                                <input type="hidden" id="{{ hospital_id_for_doctor }}" name="hospital_id_for_doctor" value="{{ hospital_id_for_doctor }}">
+                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+</body>
+
+</html>
