@@ -45,9 +45,10 @@ urlpatterns = [
     path('triple_room',HRS_APP_views.triple_room, name='triple_room'),
     path('quad_room',HRS_APP_views.quad_room, name='quad_room'),
 
-    path('booking',HRS_APP_views.book, name='book'),
+    path('book',HRS_APP_views.book, name='book'),
     path('confirm_book',HRS_APP_views.confirm_book, name='confirm_book'),
     path('view_details',HRS_APP_views.view_details, name='view_details'),
+    path('invoice',HRS_APP_views.invoice, name='invoice'),
 
 
 

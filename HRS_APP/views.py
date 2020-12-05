@@ -10,6 +10,7 @@ user_info = {}  # holds user data across pages
 customer_info_list =[]
 admin_info_list =[]
 customer_info_dict={}
+selected_room_id=[]
 
 
 
@@ -184,7 +185,7 @@ def my_booking_status(request):
     c = conn.cursor()
     
     
-    statement = "SELECT RESERVATION_ID,STATUS FROM HRS_OURDATABASE.RESERVATION WHERE CUSTOMER_ID=" + str(user_info['pk'])
+    statement = "SELECT RESERVATION_ID,STATUS,BOOKING_DATE FROM HRS_OURDATABASE.RESERVATION WHERE CUSTOMER_ID=" + str(user_info['pk'])
     
     c.execute(statement)
     result = c.fetchall()
@@ -193,7 +194,8 @@ def my_booking_status(request):
     for x in result:
         reservation_id=x[0]
         status=x[1]
-        row={'reservation_id':reservation_id,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status}
+        booking_date=x[2]
+        row={'reservation_id':reservation_id,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date}
         dict_result.append(row)
     return render(request,"Customer/My_Booking_Status.html",{'booking_info':dict_result})
 
@@ -302,7 +304,7 @@ def single_room(request):
     c = conn.cursor()
     RoomType = "SINGLE_ROOM"
     
-    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE,ROOM_ID from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
     c.execute(statement)
     result = c.fetchall()
     c.close()
@@ -313,8 +315,9 @@ def single_room(request):
         price=x[2]
         room_availability=x[3]
         image_code=x[4]
+        room_id=x[5]
         room_type="SINGLE_ROOM"
-        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+        row={'room_id':room_id,'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
 
         dict_result.append(row)
     return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
@@ -326,7 +329,7 @@ def double_room(request):
     c = conn.cursor()
     RoomType = "DOUBLE_ROOM"
     
-    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE,ROOM_ID from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
     c.execute(statement)
     result = c.fetchall()
     c.close()
@@ -337,8 +340,9 @@ def double_room(request):
         price=x[2]
         room_availability=x[3]
         image_code=x[4]
+        room_id=x[5]
         room_type="DOUBLE_ROOM"
-        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+        row={'room_id':room_id,'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
 
         dict_result.append(row)
     return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
@@ -349,7 +353,7 @@ def triple_room(request):
     c = conn.cursor()
     RoomType = "TRIPLE_ROOM"
     
-    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE,ROOM_ID from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
     c.execute(statement)
     result = c.fetchall()
     c.close()
@@ -360,8 +364,9 @@ def triple_room(request):
         price=x[2]
         room_availability=x[3]
         image_code=x[4]
+        room_id=x[5]
         room_type="TRIPLE_ROOM"
-        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+        row={'room_id':room_id,'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
 
         dict_result.append(row)
     return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
@@ -373,7 +378,7 @@ def quad_room(request):
     c = conn.cursor()
     RoomType = "QUAD_ROOM"
     
-    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE,ROOM_ID from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
     c.execute(statement)
     result = c.fetchall()
     c.close()
@@ -384,12 +389,15 @@ def quad_room(request):
         price=x[2]
         room_availability=x[3]
         image_code=x[4]
+        room_id=x[5]
         room_type="QUAD_ROOM"
-        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+        row={'room_id':room_id,'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
 
         dict_result.append(row)
     return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
 def book(request):
+    val=request.POST['selected_room_id']
+    selected_room_id.append(val)
     return render(request,"New_Booking/provide_booking_info.html")
 def confirm_book(request):
     booking_date=request.POST['booking_date']
@@ -403,16 +411,73 @@ def confirm_book(request):
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
     c = conn.cursor()
     customer_id=str(user_info['pk'])
+    booking_room_id=selected_room_id[0]
 
 
-    statement = "INSERT INTO HRS_OURDATABASE.RESERVATION(CHECK_IN,CHECK_OUT,BOOKING_DATE,STATUS,PHONE_NUMBER,GUEST_NO,CUSTOMER_ID) VALUES (" + "TO_DATE("+"\'"+checkin_date+"\',"+"'YYYY/MM/DD')"+","+"TO_DATE("+"\'"+checkout_date+"\',"+"'YYYY/MM/DD')"+","+"TO_DATE("+"\'"+booking_date+"\',"+"'YYYY/MM/DD')"+","+"\'"+status+"\',"+"\'"+phone_number+"\',"+"\'"+guest_no+"\',"+"\'"+customer_id+"\'"+")"
+    statement = "INSERT INTO HRS_OURDATABASE.RESERVATION(CHECK_IN,CHECK_OUT,BOOKING_DATE,STATUS,PHONE_NUMBER,GUEST_NO,CUSTOMER_ID,ROOM_ID) VALUES (" + "TO_DATE("+"\'"+checkin_date+"\',"+"'YYYY/MM/DD')"+","+"TO_DATE("+"\'"+checkout_date+"\',"+"'YYYY/MM/DD')"+","+"TO_DATE("+"\'"+booking_date+"\',"+"'YYYY/MM/DD')"+","+"\'"+status+"\',"+"\'"+phone_number+"\',"+"\'"+guest_no+"\',"+"\'"+customer_id+"\',"+"\'"+str(booking_room_id)+"\'"+")"
 
     c.execute(statement)
     conn.commit()
     return redirect("my_booking_status")
 
 def view_details(request):
-    return 
+    selected_reservation_id=request.POST['selected_reservation_id']
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE RESERVATION_ID="+str(selected_reservation_id)
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    
+    booking_info=[]
+    for x in result:
+        reservation_id=x[0]
+        checkin_date=x[1]
+        checkout_date=x[2]
+        booking_customer_id=x[3]
+        booking_date=x[4]
+
+        status=x[5]
+        phone_number=x[6]
+        guest_no=x[7]
+        reserved_room_id=x[8]
+
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        booking_info.append(row)
+    
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT * FROM HRS_OURDATABASE.ROOM WHERE ROOM_ID="+str(reserved_room_id)
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    room_info=[]
+    for x in result:
+        room_id=x[0]
+        building=x[1]
+        floor=x[2]
+        capacity=x[3]
+        number_of_bed=x[4]
+
+        price=x[5]
+        room_availability=x[6]
+        room_type=x[7]
+        description=x[8]
+        image_code=x[9]
+
+        row={'room_type':room_type,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'building':building,'floor':floor,'description':description,'image_code':image_code}
+        room_info.append(row)
+    
+
+
+    return render(request,"New_Booking/view_booking_details.html",{'booking_info':booking_info,'room_info':room_info})
+def invoice(request):
+    return render(request,"New_Booking/invoice.html")
 
 
 
