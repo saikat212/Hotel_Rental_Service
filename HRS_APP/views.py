@@ -16,13 +16,14 @@ admin_info_list =[]
 
 
 # Create your views here.
+
+
 def login(request):
     return render(request, "auth/LogInOrSignUp.html")
 
 def signup(request):
     return render(request, "auth/SignUp.html")
-def demo(request):
-    return render(request, "demo.html")
+
 
 
 # homepage URLs
@@ -30,8 +31,8 @@ def admin_home(request):
     return render(request, "Homepage/AdminHomePage.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
     
 
-def customer_home(request):
-    return render(request, "Homepage/CustomerHomePage.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
+#def customer_home(request):
+ #   return render(request, "Homepage/CustomerHomePage.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
     
 
 
@@ -250,12 +251,12 @@ def RoomListView(request):
 ###admin home
 
 
-def customer_profile_details(request):
-    return render(request,"Customer/profile_page.html",{'customer_all_info':customer_info_list})
+def admin_profile_details(request):
+    return render(request,"admin/Profile_page.html",{'admin_all_info':admin_info_list})
 
-    return render(request,"Customer/profile_page.html",{'first_name':user_info['f_name'],'last_name':user_info['l_name'],'gmail':user_info['gmail'],'username':user_info['username']})
+   # return render(request,"admin/Profile_page.html",{'first_name':user_info['f_name'],'last_name':user_info['l_name'],'gmail':user_info['gmail'],'username':user_info['username']})
 
-def update_customer_profile(request):
+def update_admin_profile(request):
     fname=request.POST['fname']
     lname=request.POST['lname']
     gmail=request.POST['gmail']
@@ -268,7 +269,7 @@ def update_customer_profile(request):
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
-        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET FIRST_NAME = " + "\'" + fname + "\'" + "WHERE CUSTOMER_ID = " + str(
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET FIRST_NAME = " + "\'" + fname + "\'" + "WHERE ADMIN_ID = " + str(
             user_info['pk'])
 
         c.execute(statement)
@@ -282,7 +283,7 @@ def update_customer_profile(request):
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
-        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET LAST_NAME = " + "\'" + lname + "\'" + "WHERE CUSTOMER_ID = " + str(
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET LAST_NAME = " + "\'" + lname + "\'" + "WHERE ADMIN_ID = " + str(
             user_info['pk'])
 
         c.execute(statement)
@@ -296,7 +297,7 @@ def update_customer_profile(request):
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
-        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET GMAIL = " + "\'" + gmail + "\'" + "WHERE CUSTOMER_ID = " + str(
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET GMAIL = " + "\'" + gmail + "\'" + "WHERE ADMIN_ID = " + str(
             user_info['pk'])
 
         c.execute(statement)
@@ -311,21 +312,21 @@ def update_customer_profile(request):
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
-        statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET USERNAME = " + "\'" + username + "\'" + "WHERE CUSTOMER_ID = " + str(
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET USERNAME = " + "\'" + username + "\'" + "WHERE ADMIN_ID = " + str(
             user_info['pk'])
 
         c.execute(statement)
         conn.commit()
 
-    return redirect("profile")
+    return redirect("admin_profile")
 
-def customer_change_password(request):
-    return render(request,"Customer/CustomerChangePassword.html",{'customer_password_from_database':user_info['customer_password']})
+def admin_change_password(request):
+    return render(request,"admin/adminchangepassword.html",{'admin_password_from_database':user_info['admin_password']})
 def update_your_password(request):
     current_password=request.POST['current_password']
     new_password=request.POST['new_password']
     confirm_password=request.POST['confirm_password']
-    if current_password==user_info['customer_password']:
+    if current_password==user_info['admin_password']:
         if new_password==confirm_password:
             new_encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(confirm_password).encryptPassword()
 
@@ -333,20 +334,19 @@ def update_your_password(request):
             conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
             c = conn.cursor()
 
-            statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET PASSWORD = " + "\'" + new_encoded_password + "\'" + "WHERE CUSTOMER_ID = " + str(
+            statement = "UPDATE HRS_OURDATABASE.ADMIN SET PASSWORD = " + "\'" + new_encoded_password + "\'" + "WHERE ADMIN_ID = " + str(
                 user_info['pk'])
 
             c.execute(statement)
             conn.commit()
-            return render(request, "Homepage/CustomerHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
+            return render(request, "Homepage/AdminHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
         else:
             return HttpResponse("Give similiar Password with new password")
+        return redirect("update_your_password")
     else:
         return HttpResponse("Provide correct password of previous")
 
 
-def logout(request):
-    user_info.clear()
-    return redirect("login")
+
 
 

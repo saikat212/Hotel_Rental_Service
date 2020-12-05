@@ -33,11 +33,11 @@ urlpatterns = [
 
     # ADMIN Page Part
     path('HOME', HRS_APP_views.admin_home, name='admin_home'),
-    #path('admin_profile', HRS_APP_views.admin_profile_details, name='profile'),
-   # path('admin_change_password', HRS_APP_views.cadmin_change_password, name='customer_change_password'),
-   # path('update_your_password', HRS_APP_views.update_your_password, name='update_your_password'),
-   # path('logout', HRS_APP_views.logout, name='logout'),
-    #path('update_admin_profile', HRS_APP_views.update_customer_profile, name='update_customer_profile'),
+    path('admin_profile_details', HRS_APP_views.admin_profile_details, name='admin_profile_details'),
+    path('admin_change_password', HRS_APP_views.admin_change_password, name='admin_change_password'),
+    path('update_your_password', HRS_APP_views.update_your_password, name='update_your_password'),
+    path('logout', HRS_APP_views.logout, name='logout'),
+    path('update_admin_profile', HRS_APP_views.update_admin_profile, name='update_admin_profile'),
 
 
 
