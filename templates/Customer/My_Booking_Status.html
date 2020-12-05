@@ -1,0 +1,47 @@
+{% extends 'Homepage/CustomerHomePage.html' %}
+
+{% block content %}
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">My Booking Details</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Reservation_Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Gmail</th>
+      <th scope="col">Status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for book in booking_info %}
+  <tr>
+      <th scope="row">{{book.reservation_id}}</th>
+      <td>{{book.name}}</td>
+      <td>{{book.gmail}}</td>
+      <td>{{book.status}}</td>
+
+      <td>
+      
+    
+      <a href="" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">view details</a>
+      
+       
+      </td>
+
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>
+           
+</div>
+
+
+{% endblock %}

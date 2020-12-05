@@ -28,7 +28,7 @@ def admin_home(request):
     
 
 def customer_home(request):
-    return render(request, "Homepage/CustomerHomePage.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
+    return render(request, "Homepage/CustomerHomePage.html")
     
 
 
@@ -177,6 +177,29 @@ def customer_profile_details(request):
     
     return render(request,"Customer/profile_page.html",{'first_name':user_info['f_name'],'last_name':user_info['l_name'],'gmail':user_info['gmail'],'username':user_info['username']})
 
+
+def my_booking_status(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    
+    
+    statement = "SELECT RESERVATION_ID,STATUS FROM HRS_OURDATABASE.RESERVATION WHERE CUSTOMER_ID=" + str(user_info['pk'])
+    
+    c.execute(statement)
+    result = c.fetchall()
+    c.close()
+    dict_result=[]
+    for x in result:
+        reservation_id=x[0]
+        status=x[1]
+        row={'reservation_id':reservation_id,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status}
+        dict_result.append(row)
+    return render(request,"Customer/My_Booking_Status.html",{'booking_info':dict_result})
+
+
+
+
 def update_customer_profile(request):
     fname=request.POST['fname']
     lname=request.POST['lname']
@@ -270,6 +293,134 @@ def update_your_password(request):
 def logout(request):
     user_info.clear()
     return redirect("login")
+
+
+#New booking part
+def single_room(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    RoomType = "SINGLE_ROOM"
+    
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    c.execute(statement)
+    result = c.fetchall()
+    c.close()
+    dict_result=[]
+    for x in result:
+        description=x[0]
+        capacity=x[1]
+        price=x[2]
+        room_availability=x[3]
+        image_code=x[4]
+        room_type="SINGLE_ROOM"
+        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+
+        dict_result.append(row)
+    return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
+
+    
+def double_room(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    RoomType = "DOUBLE_ROOM"
+    
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    c.execute(statement)
+    result = c.fetchall()
+    c.close()
+    dict_result=[]
+    for x in result:
+        description=x[0]
+        capacity=x[1]
+        price=x[2]
+        room_availability=x[3]
+        image_code=x[4]
+        room_type="DOUBLE_ROOM"
+        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+
+        dict_result.append(row)
+    return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
+
+def triple_room(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    RoomType = "TRIPLE_ROOM"
+    
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    c.execute(statement)
+    result = c.fetchall()
+    c.close()
+    dict_result=[]
+    for x in result:
+        description=x[0]
+        capacity=x[1]
+        price=x[2]
+        room_availability=x[3]
+        image_code=x[4]
+        room_type="TRIPLE_ROOM"
+        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+
+        dict_result.append(row)
+    return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
+
+
+def quad_room(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    RoomType = "QUAD_ROOM"
+    
+    statement = "SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,IMAGE_CODE from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    c.execute(statement)
+    result = c.fetchall()
+    c.close()
+    dict_result=[]
+    for x in result:
+        description=x[0]
+        capacity=x[1]
+        price=x[2]
+        room_availability=x[3]
+        image_code=x[4]
+        room_type="QUAD_ROOM"
+        row={'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+
+        dict_result.append(row)
+    return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
+def book(request):
+    return render(request,"New_Booking/provide_booking_info.html")
+def confirm_book(request):
+    booking_date=request.POST['booking_date']
+    checkin_date=request.POST['checkin_date']
+    checkout_date=request.POST['checkout_date']
+    phone_number=request.POST['phone_number']
+    guest_no=request.POST['guest_no']
+    status="PENDING"
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    customer_id=str(user_info['pk'])
+
+
+    statement = "INSERT INTO HRS_OURDATABASE.RESERVATION(CHECK_IN,CHECK_OUT,BOOKING_DATE,STATUS,PHONE_NUMBER,GUEST_NO,CUSTOMER_ID) VALUES (" + "TO_DATE("+"\'"+checkin_date+"\',"+"'YYYY/MM/DD')"+","+"TO_DATE("+"\'"+checkout_date+"\',"+"'YYYY/MM/DD')"+","+"TO_DATE("+"\'"+booking_date+"\',"+"'YYYY/MM/DD')"+","+"\'"+status+"\',"+"\'"+phone_number+"\',"+"\'"+guest_no+"\',"+"\'"+customer_id+"\'"+")"
+
+    c.execute(statement)
+    conn.commit()
+    return redirect("my_booking_status")
+
+def view_details(request):
+    return 
+
+
+
+
+
+
+
+
 
 
 

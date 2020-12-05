@@ -31,11 +31,24 @@ urlpatterns = [
 
     #Customer Page Part
     path('HOME', HRS_APP_views.customer_home, name='customer_home'),
+
     path('customer_profile',HRS_APP_views.customer_profile_details, name='profile'),
+    path('booking_details',HRS_APP_views.my_booking_status, name='my_booking_status'),
     path('customer_change_password',HRS_APP_views.customer_change_password, name='customer_change_password'),
     path('update_your_password',HRS_APP_views.update_your_password, name='update_your_password'),
     path('logout',HRS_APP_views.logout, name='logout'),
     path('update_customer_profile',HRS_APP_views.update_customer_profile, name='update_customer_profile'),
+
+    #New Booking Part
+    path('single_room',HRS_APP_views.single_room, name='single_room'),
+    path('double_room',HRS_APP_views.double_room, name='double_room'),
+    path('triple_room',HRS_APP_views.triple_room, name='triple_room'),
+    path('quad_room',HRS_APP_views.quad_room, name='quad_room'),
+
+    path('booking',HRS_APP_views.book, name='book'),
+    path('confirm_book',HRS_APP_views.confirm_book, name='confirm_book'),
+    path('view_details',HRS_APP_views.view_details, name='view_details'),
+
 
 
 

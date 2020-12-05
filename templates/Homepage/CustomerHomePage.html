@@ -33,25 +33,25 @@
       
 
        <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="{% url 'customer_home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           My Account
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
-          <a class="dropdown-item" href="#">My Booking Status</a>
+          <a class="dropdown-item" href="{% url 'my_booking_status' %}">My Booking Status</a>
           <a class="dropdown-item" href="{% url 'customer_change_password' %}">Change Password</a>
           <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
       </li>
 
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="{% url 'customer_home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           New Booking
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Single Room</a>
-          <a class="dropdown-item" href="#">Double Room</a>
-          <a class="dropdown-item" href="#">Triple Room</a>
-          <a class="dropdown-item" href="#">Quad Room</a>
+          <a class="dropdown-item" href="{% url 'single_room' %}">Single Room</a>
+          <a class="dropdown-item" href="{% url 'double_room' %}">Double Room</a>
+          <a class="dropdown-item" href="{% url 'triple_room' %}">Triple Room</a>
+          <a class="dropdown-item" href="{% url 'quad_room' %}">Quad Room</a>
       </li>
 
       <li class="nav-item">
