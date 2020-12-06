@@ -44,7 +44,7 @@ def submit(request):
     usertype = request.POST['usertype']
    
     
-    dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='ORCL')
+    dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='xe')
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
 
     c = conn.cursor()
@@ -71,7 +71,7 @@ def submit(request):
             user_info['gmail'] = admin_gmail
             user_info['city'] = admin_city
             user_info['country'] = admin_country
-            user_info['username'] = admin_gmail
+            user_info['username'] = admin_username
             
 
 
@@ -113,7 +113,7 @@ def submit(request):
             user_info['gmail'] = customer_gmail
             user_info['city'] = customer_city
             user_info['country'] = customer_country
-            user_info['username'] =customer_gmail
+            user_info['username'] =customer_username
 
             decoded_password=ED_Operation.Encrypt_Decrypt_Passwords(return_password).decryptPassword()
             customer_password=decoded_password
@@ -153,7 +153,7 @@ def signupSubmit(request):
 
     encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(input_password).encryptPassword()
     if usertype == 'admin':
-        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='ORCL')
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
         
@@ -167,7 +167,7 @@ def signupSubmit(request):
         conn.commit()
 
     elif usertype == 'customer':
-        dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='ORCL')
+        dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
         statement = "INSERT INTO HRS_OURDATABASE.CUSTOMER(FIRST_NAME, LAST_NAME, GMAIL, CITY,COUNTRY,USERNAME,PASSWORD) VALUES (" + "\'" + firstname + \
@@ -190,7 +190,7 @@ def logout(request):
 
 def see_admin_details(request):
     admin_id = request.POST['admin_id']
-    dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='ORCL')
+    dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='xe')
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
     c = conn.cursor()
 
@@ -208,7 +208,8 @@ def see_admin_details(request):
     admin_country =""
     admin_username = ""
 
-    for row in c:
+    for x in c:
+
         admin_id = x[0]
         return_password = x[1]
         admin_f_name = x[2]
@@ -228,33 +229,13 @@ def see_admin_details(request):
                    'adminusername': admin_username
                    })
 
-
-def RoomListView(request):
-    room = Room.objects.all()[0]
-    room_categories = dict(room.ROOM_AVAILABILITY)
-    room_values = room_categories.values()
-    room_list = []
-
-    for room_category in room_categories:
-        room = room_categories.get(room_category)
-        room_url = reverse('hotel:RoomDetailView', kwargs={
-                           'category': room_category})
-
-        room_list.append((room, room_url))
-    context = {
-        "room_list": room_list,
-    }
-    return render(request, 'room_list_view.html', context)
-
-
-
 ###admin home
 
 
 def admin_profile_details(request):
-    return render(request,"admin/Profile_page.html",{'admin_all_info':admin_info_list})
+    return render(request,"admin/profile_page.html",{'first_name':user_info['f_name'],'last_name':user_info['l_name'],'gmail':user_info['gmail'],'username':user_info['username']})
 
-   # return render(request,"admin/Profile_page.html",{'first_name':user_info['f_name'],'last_name':user_info['l_name'],'gmail':user_info['gmail'],'username':user_info['username']})
+  
 
 def update_admin_profile(request):
     fname=request.POST['fname']
@@ -265,7 +246,7 @@ def update_admin_profile(request):
         user_info['f_name']=fname
 
 
-        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='ORCL')
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
@@ -279,7 +260,7 @@ def update_admin_profile(request):
         user_info['l_name']=lname
 
 
-        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='ORCL')
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
@@ -293,7 +274,7 @@ def update_admin_profile(request):
         user_info['gmail']=gmail
 
 
-        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='ORCL')
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
@@ -308,7 +289,7 @@ def update_admin_profile(request):
         user_info['username']=username
 
 
-        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='ORCL')
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
 
@@ -318,7 +299,7 @@ def update_admin_profile(request):
         c.execute(statement)
         conn.commit()
 
-    return redirect("admin_profile")
+    return redirect("admin_profile_details")
 
 def admin_change_password(request):
     return render(request,"admin/adminchangepassword.html",{'admin_password_from_database':user_info['admin_password']})
@@ -330,7 +311,7 @@ def update_your_password(request):
         if new_password==confirm_password:
             new_encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(confirm_password).encryptPassword()
 
-            dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='ORCL')
+            dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
             conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
             c = conn.cursor()
 
