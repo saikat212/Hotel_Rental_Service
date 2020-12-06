@@ -485,7 +485,134 @@ def invoice(request):
 
 
 
+###admin home
+def admin_profile_details(request):
+    return render(request,"admin/profile_page.html",{'first_name':user_info['f_name'],'last_name':user_info['l_name'],'gmail':user_info['gmail'],'username':user_info['username']})
 
+  
+
+def update_admin_profile(request):
+    fname=request.POST['fname']
+    lname=request.POST['lname']
+    gmail=request.POST['gmail']
+    username=request.POST['username']
+    if fname != user_info['f_name']:
+        user_info['f_name']=fname
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET FIRST_NAME = " + "\'" + fname + "\'" + "WHERE ADMIN_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+    if lname != user_info['l_name']:
+
+        user_info['l_name']=lname
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET LAST_NAME = " + "\'" + lname + "\'" + "WHERE ADMIN_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+    if gmail != user_info['gmail']:
+
+        user_info['gmail']=gmail
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET GMAIL = " + "\'" + gmail + "\'" + "WHERE ADMIN_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+
+    if username != user_info['username']:
+
+        user_info['username']=username
+
+
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c = conn.cursor()
+
+        statement = "UPDATE HRS_OURDATABASE.ADMIN SET USERNAME = " + "\'" + username + "\'" + "WHERE ADMIN_ID = " + str(
+            user_info['pk'])
+
+        c.execute(statement)
+        conn.commit()
+
+    return redirect("admin_profile_details")
+
+def admin_change_password(request):
+    return render(request,"admin/adminchangepassword.html",{'admin_password_from_database':user_info['admin_password']})
+def update_admin_password(request):
+    current_password=request.POST['current_password']
+    new_password=request.POST['new_password']
+    confirm_password=request.POST['confirm_password']
+    if current_password==user_info['admin_password']:
+        if new_password==confirm_password:
+            new_encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(confirm_password).encryptPassword()
+
+            dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+            conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+            c = conn.cursor()
+
+            statement = "UPDATE HRS_OURDATABASE.ADMIN SET PASSWORD = " + "\'" + new_encoded_password + "\'" + "WHERE ADMIN_ID = " + str(
+                user_info['pk'])
+
+            c.execute(statement)
+            conn.commit()
+            return render(request, "Homepage/AdminHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
+        else:
+            return HttpResponse("Give similiar Password with new password")
+        return redirect("update_admin_password")
+    else:
+        return HttpResponse("Provide correct password of previous")
+
+
+
+# Booking management in admin
+
+def all_booking(request):
+    selected_reservation_id=request.POST['selected_reservation_id']
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE RESERVATION_ID="+str(selected_reservation_id)
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    
+    booking_info=[]
+    for x in result:
+        reservation_id=x[0]
+        checkin_date=x[1]
+        checkout_date=x[2]
+        booking_customer_id=x[3]
+        booking_date=x[4]
+
+        status=x[5]
+        phone_number=x[6]
+        guest_no=x[7]
+        reserved_room_id=x[8]
+
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        booking_info.append(row)
+    return render(request,"admin/all_booking.html",{'booking_info':booking_info})
 
 
 
