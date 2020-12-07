@@ -1,0 +1,26 @@
+{% extends 'Homepage/AdminHomePage.html' %}
+
+{% block content %}
+
+<form action="edit_status" method="post">
+{% csrf_token %}
+    
+<div>
+<label for="room_availability">Room Availability Status</label>
+<input type="text" name="room_availability" id="room_availability" value="{{room_availability}}">
+</div><br>
+
+<div>Modified Status:
+            <label for="modified_status"></label><br>
+            <select id="modified_status" name="modified_status" class="block">
+                <option selected disabled>decision of admin </option>
+                <option value="PENDING" class="block">PENDING</option>
+                <option value="APPROVED" class="block">APPROVED</option>
+                <option value="CANCELLED" class="block">CANCELLED</option>
+            </select>
+            </div><br>
+
+  <button type="submit" class="btn btn-primary mb-2">Edit Status</button>
+</form></div>
+
+{% endblock %}

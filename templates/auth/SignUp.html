@@ -1,0 +1,57 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            Sign Up
+        </title>
+       <link rel="stylesheet" href="{% static 'css/signUp.css' %}">
+    </head>
+    <body>
+        <div>Welcome</div>
+        <h1>Sign Up Here!</h1>
+        <form action="signupSubmit" method="post">
+            {% csrf_token %}
+            <h1>Usertype:
+            <label for="User"></label>
+            <select id="User" name="User" class="block">
+                <option value="customer" >Customer</option>
+                <option value="admin" >Admin</option>
+            </select>
+            </h1><br>
+            <h1>First Name:
+            <label for="fname" class="block"></label>
+            <input type="text" id="fname" name="fname" class="block"></h1><br>
+            
+            <h1>Last Name:
+            <label for="lname" class="block"></label>
+            <input type="text" id="lname" name="lname" class="block"></h1><br>
+            <h1>Gmail:
+            <label for="email" class="block"></label>
+            <input type="text" id="email" name="email" class="block"></h1><br>
+            <h1>Username:
+            <label for="username"></label>
+            <input type="username" id="username" name="username" class="block"></h1><br>
+           
+            <h1>Password:
+            <label for="pass"></label>
+            <input type="password" id="pass" name="pass" class="block"></h1><br>
+            <h1>Confirm Password:
+            <label for="cpass"></label>
+            <input type="password" id="cpass" name="cpass" class="block"></h1><br
+            <div>
+            <h1>City:
+            <label for="city" class="block"></label>
+            <input type="text" id="city" name="city" class="block"></h1>
+            </div>
+            <div>
+            <h1>Country:
+            <label for="country" class="block"></label>
+            <input type="text" id="country" name="country" class="block"></h1>
+            </div>
+            <h1>
+            <button class="block" type="submit">Submit</button>
+            </h1><br>
+            
+        </form>
+    </body>
+</html>

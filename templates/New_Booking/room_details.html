@@ -1,0 +1,51 @@
+{% extends 'Homepage/CustomerHomePage.html' %}
+
+{% block content %}
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">Room Details</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Room_Id</th>
+      <th scope="col">Room Type</th>
+      <th scope="col">Price</th>
+      <th scope="col">Capacity</th>
+      <th scope="col">Room Availability</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for room in room_info %}
+  <tr>
+      <th scope="row">{{room.room_id}}</th>
+      <th scope="row">{{room.room_type}}</th>
+      <td>{{room.price}}</td>
+      <td>{{room.capacity}}</td>
+      <td>{{room.room_availability}}</td>
+      <td>{{room.description}}</td>
+      
+
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>        
+</div>
+<div>
+<form action="book" method="post">
+{% csrf_token %}
+    
+    
+     
+  <input type="number" name="selected_room_id" placeholder="Booking Room_id">
+
+  <button type="submit" class="btn btn-primary mb-2">Book</button>
+</form></div>
+
+{% endblock %}

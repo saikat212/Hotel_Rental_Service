@@ -1,0 +1,19 @@
+div{
+                font-size: 50px;
+                font-weight: 800;
+                font-family: sans-serif;
+                text-align:center;
+                color:green;
+            }
+            .block {
+                width: 25%;
+                height:30px;
+                text-align: center;
+            }
+            h1{
+                font-size: 20px;
+                font-weight: 800;
+                font-family: sans-serif;
+                text-align:center;
+                color:green;
+            }

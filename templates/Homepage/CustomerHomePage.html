@@ -1,0 +1,280 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+     {% block header_file_content %}
+     {% endblock %}
+    <title>
+    CustomerHomePage
+    {% block title_name %}
+
+    {% endblock %}
+    
+    </title>
+  </head>
+  <body>
+   <nav class="navbar navbar-expand-lg navbar-light bg-success text-light">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'customer_home' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      
+
+       <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="{% url 'customer_home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          My Account
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+          <a class="dropdown-item" href="{% url 'my_booking_status' %}">My Booking Status</a>
+          <a class="dropdown-item" href="{% url 'customer_change_password' %}">Change Password</a>
+          <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="{% url 'customer_home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          New Booking
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{% url 'single_room' %}">Single Room</a>
+          <a class="dropdown-item" href="{% url 'double_room' %}">Double Room</a>
+          <a class="dropdown-item" href="{% url 'triple_room' %}">Triple Room</a>
+          <a class="dropdown-item" href="{% url 'quad_room' %}">Quad Room</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="dropdown-item" href="{% url 'about' %}">Galary</a>
+      </li>
+
+
+
+      <li class="nav-item">
+        <a class="dropdown-item" href="{% url 'contact' %}">Contact Us</a>
+
+
+      </li>
+      <li></li>
+      <li></li>
+
+
+
+    </ul>
+
+
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+
+  </div>
+</nav>
+
+   {% block content %}
+
+   {% endblock %}
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
+    <!-- Option 2: jQuery, Popper.js, and Bootstrap JS
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js" integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous"></script>
+    -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {box-sizing: border-box}
+body {font-family: Verdana, sans-serif; margin:0}
+.mySlides {display: none}
+img {vertical-align: middle;}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  position: absolute;
+  top: 200px;
+  width: 1000px;
+  height: 70px;
+
+  margin: auto;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 20s;
+  animation-name: fade;
+  animation-duration: 20s;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: 1}
+  to {opacity: 10}
+}
+
+
+
+/* On smaller screens, decrease text size */
+@media only screen and (max-width: 300px) {
+  .prev, .next,.text {font-size: 11px}
+}
+</style>
+</head>
+<body>
+
+<div class="slideshow-container">
+
+<div class="mySlides fade">
+  <div class="numbertext">1 / 7</div>
+  <img src="https://media-cdn.tripadvisor.com/media/photo-s/07/86/87/46/triple-bedroom.jpg" style="width:100%">
+  <div class="text">Single brdroom</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">2 / 7</div>
+  <img src="data:image/jpeg;base64,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" style="width:100%">
+  <div class="text">Double bedroom</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">3 / 7</div>
+  <img src="https://media-cdn.tripadvisor.com/media/photo-s/07/86/87/46/triple-bedroom.jpg" style="width:100%">
+  <div class="text"> triple bedroom</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">4 / 7</div>
+  <img src="https://www.hotelprincesspark.in/img/room1/pd4-5.jpg" style="width:100%">
+  <div class="text">Quard bed room</div>
+</div>
+
+
+<div class="mySlides fade">
+  <div class="numbertext">5 / 7</div>
+  <img src="https://media-cdn.tripadvisor.com/media/photo-m/1280/16/8b/17/c3/dandelion-hotel.jpg" style="width:100%">
+  <div class="text">hotel</div>
+</div>
+
+<div class="mySlides fade">
+  <div class="numbertext">6 / 7</div>
+  <img src="https://cf.bstatic.com/xdata/images/hotel/270x200/174939362.jpg?k=2ba7bcb773e9bf85f757cb1634584f3fffaf0eb82962e0a225a1ecb83aab529e&o=" style="width:100%">
+  <div class="text">swimming pool</div>
+</div>
+<div class="mySlides fade">
+  <div class="numbertext">7 / 7</div>
+  <img src="https://r1imghtlak.mmtcdn.com/ecc63de64c0411ea9c470242ac110002.jpg?&output-quality=75&downsize=520:350&crop=520:350;2,0&output-format=jpg" style="width:100%">
+  <div class="text">Cafteria</div>
+</div>
+
+
+
+
+<a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+<a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+</div>
+<br>
+
+<div style="text-align:center">
+  <span class="dot" onclick="currentSlide(1)"></span>
+  <span class="dot" onclick="currentSlide(2)"></span>
+  <span class="dot" onclick="currentSlide(3)"></span>
+</div>
+
+<script>
+var slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) {
+  showSlides(slideIndex += n);
+}
+
+function currentSlide(n) {
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+</script>
+
+
+  </body>
+</html>

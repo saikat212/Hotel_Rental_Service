@@ -1,0 +1,53 @@
+{% extends 'Homepage/AdminHomePage.html' %}
+
+{% block content %}
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">Approved Booking</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Reservation_Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Gmail</th>
+      <th scope="col">Booking_date</th>
+      <th scope="col">Checkin_date</th>
+      <th scope="col">Checkout_date</th>
+      <th scope="col">status</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for book in booking_info %}
+  <tr>
+      <th scope="row">{{book.reservation_id}}</th>
+      <td>{{book.name}}</td>
+      <td>{{book.gmail}}</td>
+      <td>{{book.booking_date}}</td>
+      <td>{{book.checkin_date}}</td>
+      <td>{{book.checkout_date}}</td>
+      <td>{{book.status}}</td>
+
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>
+           
+</div><br><br>
+
+<form action="booking_modify" method="post">
+{% csrf_token %}
+    
+    
+     
+  <input type="number" name="selected_reservation_id" placeholder="Enter reservation_id">
+
+  <button type="submit" class="btn btn-primary mb-2">Booking Modify</button>
+</form></div>
+
+{% endblock %}
