@@ -1,0 +1,64 @@
+{% extends 'Homepage/AdminHomePage.html' %}
+
+{% block content %}
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">Provide Information for New Room</h1>
+  </div>
+</div>
+
+<div>
+<form action="complete_add_room" method="post">
+ {% csrf_token %}
+
+<div>Room Type:
+            <label for="room_type"></label><br>
+            <select id="room_type" name="room_type" class="block">
+                <option selected disabled>Select Room Type </option>
+                <option value="SINGLE_ROOM" class="block">Single Room</option>
+                <option value="DOUBLE_ROOM" class="block">Double Room</option>
+                <option value="TRIPLE_ROOM" class="block">Triple Room</option>
+                <option value="QUAD_ROOM" class="block">Quad Room</option>
+            </select>
+            </div><br>
+
+
+<div class="form-group">
+    <label for="des">Building</label>
+    <input type="text" name="building"  id="des" aria-describedby="emailHelp">
+</div>
+<div class="form-group">
+    <label for="floatformat">Floor</label>
+    <input type="number" name="floor" id="floor" aria-describedby="emailHelp">
+</div>
+
+<div class="form-group">
+    <label for="price">Capacity</label>
+    <input type="number" name="capacity" id="price" aria-describedby="emailHelp">
+</div>
+<div class="form-group">
+    <label for="price">Number Of Bed</label>
+    <input type="number" name="number_of_bed" id="price" aria-describedby="emailHelp">
+  </div>
+<div class="form-group">
+    <label for="price">Price</label>
+    <input type="number" name="price" id="price" aria-describedby="emailHelp">
+  </div>
+  <div class="form-group">
+    <label for="price">Room Availability</label>
+    <input type="text" name="room_availability" id="price" aria-describedby="emailHelp">
+  </div>
+ <div class="form-group">
+    <label for="des">Description</label>
+    <input type="text" name="description"  id="des" aria-describedby="emailHelp">
+  </div>
+
+  <button type="submit" class="btn btn-primary">COMPLETE ADD ROOM </button>
+</form>
+ 
+           
+</div>
+
+
+{% endblock %}

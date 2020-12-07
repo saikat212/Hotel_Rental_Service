@@ -1,0 +1,56 @@
+{% extends 'Homepage/AdminHomePage.html' %}
+
+{% block content %}
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">All Room Information of Hotel</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Room_Id</th>
+      <th scope="col">Room_type</th>
+      <th scope="col">Number of bed</th>
+      <th scope="col">Capacity</th>
+      <th scope="col">Building</th>
+      <th scope="col">Floor</th>
+      <th scope="col">Price</th>
+      <th scope="col">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for room in room_info %}
+  <tr>
+      <th scope="row">{{room.room_id}}</th>
+      <td>{{room.room_type}}</td>
+      <td>{{room.number_of_bed}}</td>
+      <td>{{room.capacity}}</td>
+      <td>{{room.building}}</td>
+      <td>{{room.floor}}</td>
+      <td>{{room.price}}</td>
+      <td>{{room.description}}</td>
+
+
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>
+           
+</div><br><br>
+
+<form action="update_room_info" method="post">
+{% csrf_token %}
+    
+    
+     
+  <input type="number" name="updated_room_id" placeholder="Enter room_id">
+
+  <button type="submit" class="btn btn-primary mb-2">Room Info Modify</button>
+</form></div>
+
+{% endblock %}

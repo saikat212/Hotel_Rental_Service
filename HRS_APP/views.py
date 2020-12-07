@@ -11,7 +11,9 @@ customer_info_list =[]
 admin_info_list =[]
 customer_info_dict={}
 selected_room_id=[]
-
+modified_reservation_id=[]
+modified_reservation_room_id=[]
+updated_room_id=[]
 
 
 # Create your views here.
@@ -586,12 +588,10 @@ def update_admin_password(request):
 # Booking management in admin
 
 def all_booking(request):
-    selected_reservation_id=request.POST['selected_reservation_id']
-
     dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
     c1 = conn.cursor()
-    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE RESERVATION_ID="+str(selected_reservation_id)
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION"
     c1.execute(statement)
     
     result = c1.fetchall()
@@ -610,9 +610,270 @@ def all_booking(request):
         guest_no=x[7]
         reserved_room_id=x[8]
 
+
         row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
         booking_info.append(row)
     return render(request,"admin/all_booking.html",{'booking_info':booking_info})
+def booking_modify(request):
+    selected_reservation_id=request.POST['selected_reservation_id']
+    modified_reservation_id.append(selected_reservation_id)
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT ROOM_ID,STATUS FROM HRS_OURDATABASE.RESERVATION WHERE RESERVATION_ID="+str(modified_reservation_id[0])
+
+    c1.execute(statement)
+    result = c1.fetchall()
+    c1.close()
+    for x in result:
+        room_id=x[0]
+        modified_reservation_room_id.append(room_id)
+        status=x[1]
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT ROOM_AVAILABILITY FROM HRS_OURDATABASE.ROOM WHERE ROOM_ID="+str(modified_reservation_room_id[0])
+
+    c1.execute(statement)
+    result = c1.fetchall()
+    c1.close()
+    for x in result:
+        room_availability=x[0]
+    return render(request,"admin/edit_status.html",{'room_availability':room_availability,'status':status})
+
+def edit_status(request):
+    edited_room_availability=request.POST['room_availability']
+    modified_status=request.POST['modified_status']
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+
+
+    statement = "UPDATE HRS_OURDATABASE.ROOM SET ROOM_AVAILABILITY = " + "\'" + edited_room_availability + "\'" + "WHERE ROOM_ID = " + str(modified_reservation_room_id[0])
+
+    c.execute(statement)
+    conn.commit()
+    
+
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    statement = "UPDATE HRS_OURDATABASE.RESERVATION SET STATUS = " + "\'" + modified_status + "\'" + "WHERE RESERVATION_ID = " + str(modified_reservation_id[0])
+    c.execute(statement)
+    conn.commit()
+    modified_reservation_id.clear()
+    modified_reservation_room_id.clear()
+    if(modified_status=="PENDING"):
+        return redirect("pending_booking")
+    if(modified_status=="APPROVED"):
+        return redirect("approved_booking")
+    if(modified_status=="CANCELLED"):
+        return redirect("cancelled_booking")
+def approved_booking(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    expected_status="APPROVED"
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE STATUS="+"\'"+expected_status+"\'"
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    
+    booking_info=[]
+    for x in result:
+        reservation_id=x[0]
+        checkin_date=x[1]
+        checkout_date=x[2]
+        booking_customer_id=x[3]
+        booking_date=x[4]
+
+        status=x[5]
+        phone_number=x[6]
+        guest_no=x[7]
+        reserved_room_id=x[8]
+
+
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        booking_info.append(row)
+    return render(request,"admin/approved_booking.html",{'booking_info':booking_info})
+
+
+def pending_booking(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    expected_status="PENDING"
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE STATUS="+"\'"+expected_status+"\'"
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    
+    booking_info=[]
+    for x in result:
+        reservation_id=x[0]
+        checkin_date=x[1]
+        checkout_date=x[2]
+        booking_customer_id=x[3]
+        booking_date=x[4]
+
+        status=x[5]
+        phone_number=x[6]
+        guest_no=x[7]
+        reserved_room_id=x[8]
+
+
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        booking_info.append(row)
+    return render(request,"admin/pending_booking.html",{'booking_info':booking_info})
+
+def cancelled_booking(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    expected_status="CANCELLED"
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE STATUS="+"\'"+expected_status+"\'"
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    
+    booking_info=[]
+    for x in result:
+        reservation_id=x[0]
+        checkin_date=x[1]
+        checkout_date=x[2]
+        booking_customer_id=x[3]
+        booking_date=x[4]
+
+        status=x[5]
+        phone_number=x[6]
+        guest_no=x[7]
+        reserved_room_id=x[8]
+
+
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        booking_info.append(row)
+    return render(request,"admin/cancelled_booking.html",{'booking_info':booking_info})
+    
+def add_room(request):
+    return render(request,"admin/take_room_information.html")
+def complete_add_room(request):
+    room_type=request.POST['room_type']
+    building=request.POST['building']
+    floor=request.POST['floor']
+    capacity=request.POST['capacity']
+    number_of_bed=request.POST['number_of_bed']
+    price=request.POST['price']
+    room_availability=request.POST['room_availability']
+    description=request.POST['description']
+
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+        
+    statement = "INSERT INTO HRS_OURDATABASE.ROOM(BUILDING,FLOOR,CAPACITY,NUMBER_OF_BED,PRICE,ROOM_AVAILABILITY,ROOM_TYPE,DESCRIPTION) VALUES (" + "\'" + str(building) + \
+                    "\', " + "\'" + str(floor) + "\'," + "\'" +str(capacity)+ "\', " + "\'" +str(number_of_bed) + "\', " + "\'" + str(price) + "\'," + "\'" + room_availability + "\', " + "\'" +room_type+ "\'," + "\'" +description+ "\'" ")"
+        
+    c.execute(statement)
+    conn.commit()
+    return redirect("admin_home")
+
+def manage_room(request):
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    statement="SELECT * FROM HRS_OURDATABASE.ROOM"
+
+    c.execute(statement)
+    
+    result = c.fetchall()
+    c.close()
+    
+    room_info=[]
+    for x in result:
+        room_id=x[0]
+ 
+        building=x[1]
+        floor=x[2]
+        capacity=x[3]
+        number_of_bed=x[4]
+        price=x[5]
+        room_availability=x[6]
+        room_type=x[7]
+        description=x[8]
+        img_code=x[9]
+
+        row={'room_id':room_id,'building':building,'floor':floor,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'room_availability':room_availability,'room_type':room_type,'description':description}
+        room_info.append(row)
+    return render(request,"admin/all_room_information.html",{'room_info':room_info})
+def update_room_info(request):
+    updated_room_id.append(request.POST['updated_room_id'])
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    statement="SELECT * FROM HRS_OURDATABASE.ROOM WHERE ROOM_ID="+str(updated_room_id[0])
+
+    c.execute(statement)
+    
+    result = c.fetchall()
+    c.close()
+    
+    room_info=[]
+    for x in result:
+        room_id=x[0]
+ 
+        building=x[1]
+        floor=x[2]
+        capacity=x[3]
+        number_of_bed=x[4]
+        price=x[5]
+        room_availability=x[6]
+        room_type=x[7]
+        description=x[8]
+        img_code=x[9]
+
+    return render(request,"admin/room_editing_page.html",{'room_id':room_id,'building':building,'floor':floor,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'room_availability':room_availability,'room_type':room_type,'description':description})
+
+def complete_update_room_info(request):
+
+    room_type=request.POST['room_type']
+    building=request.POST['building']
+    floor=request.POST['floor']
+    capacity=request.POST['capacity']
+    number_of_bed=request.POST['number_of_bed']
+    price=request.POST['price']
+    description=request.POST['description']
+
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    statement = "UPDATE HRS_OURDATABASE.ROOM SET BUILDING = " + "\'" + building + "\'," + "FLOOR = " + "\'" + str(floor)+ "\'," +"CAPACITY = " + "\'" + str(capacity)+ "\'," +"NUMBER_OF_BED = " + "\'" + str(number_of_bed)+ "\'," +"PRICE = " + "\'" + str(price)+ "\'," +"ROOM_TYPE = " + "\'" +room_type+ "\'," +"DESCRIPTION = " + "\'" +description+ "\'" + "WHERE ROOM_ID = " + str(updated_room_id[0])
+          
+    c.execute(statement)
+    conn.commit()
+    updated_room_id.clear()
+    return redirect("admin_home")
+
+    
+    
+
+
+
+
+
+
+    
+
+
 
 
 
