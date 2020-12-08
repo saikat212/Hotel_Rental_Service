@@ -25,8 +25,8 @@
   {% for book in booking_info %}
   <tr>
       <th scope="row">{{book.reservation_id}}</th>
-      <td>{{name}}</td>
-      <td>{{gmail}}</td>
+      <td>{{book.name}}</td>
+      <td>{{book.gmail}}</td>
       <td>{{book.booking_date}}</td>
       <td>{{book.checkin_date}}</td>
       <td>{{book.checkout_date}}</td>
