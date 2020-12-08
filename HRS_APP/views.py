@@ -3,7 +3,7 @@ from django.shortcuts import render,redirect
 import cx_Oracle
 
 import HelperClass.Encrypt_Decrypt_Pass as ED_Operation
-
+import datetime
 
 # login
 user_info = {}  # holds user data across pages
@@ -14,6 +14,7 @@ selected_room_id=[]
 modified_reservation_id=[]
 modified_reservation_room_id=[]
 updated_room_id=[]
+selected_reservation_id_in_view_details=[]
 
 
 # Create your views here.
@@ -423,12 +424,12 @@ def confirm_book(request):
     return redirect("my_booking_status")
 
 def view_details(request):
-    selected_reservation_id=request.POST['selected_reservation_id']
+    selected_reservation_id_in_view_details.append(request.POST['selected_reservation_id'])
 
     dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
     c1 = conn.cursor()
-    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE RESERVATION_ID="+str(selected_reservation_id)
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE RESERVATION_ID="+str(selected_reservation_id_in_view_details[0])
     c1.execute(statement)
     
     result = c1.fetchall()
@@ -440,12 +441,16 @@ def view_details(request):
         checkin_date=x[1]
         checkout_date=x[2]
         booking_customer_id=x[3]
-        booking_date=x[4]
+        total_day_in_date_formate=checkout_date-checkin_date
+        total_day=total_day_in_date_formate.days
+        bin=x[4]
+        booking_date=bin.date()
 
         status=x[5]
         phone_number=x[6]
         guest_no=x[7]
         reserved_room_id=x[8]
+        
 
         row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
         booking_info.append(row)
@@ -471,14 +476,16 @@ def view_details(request):
         room_type=x[7]
         description=x[8]
         image_code=x[9]
-
-        row={'room_type':room_type,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'building':building,'floor':floor,'description':description,'image_code':image_code}
+        total_bill=int(total_day*price)
+        row={'room_type':room_type,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'building':building,'floor':floor,'description':description,'image_code':image_code,'total_bill':total_bill}
         room_info.append(row)
     
 
 
     return render(request,"New_Booking/view_booking_details.html",{'booking_info':booking_info,'room_info':room_info})
 def invoice(request):
+
+
     return render(request,"New_Booking/invoice.html")
 
 def contact_submit(request):

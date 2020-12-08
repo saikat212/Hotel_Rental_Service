@@ -18,6 +18,7 @@
       <th scope="col">Booking_date</th>
       <th scope="col">Checkin_date</th>
       <th scope="col">Checkout_date</th>
+      
       <th scope="col">Guest_No</th>
     </tr>
   </thead>
@@ -55,6 +56,7 @@
       <th scope="col">Capacity</th>
       <th scope="col">Number Of bed</th>
       <th scope="col">Price(Perday)</th>
+      <th scope="col">Total Bill for reservation(Taka)</th>
       <th scope="col">Description</th>
       <th scope="col">Building</th>
       <th scope="col">Floor</th>
@@ -67,6 +69,7 @@
       <td>{{room.capacity}}</td>
       <td>{{room.number_of_bed}}</td>
       <td>{{room.price}}</td>
+       <td>{{room.total_bill}}</td>
       <td>{{room.description}}</td>
       <td>{{room.building}}</td>
       <td>{{room.floor}}</td>
@@ -81,12 +84,18 @@
 
 
 <div>
-<form action="invoice" method="post">
- {% csrf_token %}
-   <button class="block" type="submit">INVOICE</button>
 
+
+<div class="text-center" style="margin:10px 0 10px 0;">
+    <a href="{% url 'my_booking_status' %}" class="btn btn-primary" role="button" >Back</a>
+    <button onclick="printFunction()" class="btn btn-primary active">Print Voucher</button>
+    <script>
+        function printFunction() {
+            window.print();
+        }
+    </script>
+</div>
             
-</form>
 
 
 
