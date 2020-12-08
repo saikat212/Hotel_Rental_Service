@@ -1,0 +1,38 @@
+{% extends 'Homepage/AdminHomePage.html' %}
+
+{% block content %}
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">All Notification From Customer</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+  <th scope="col">Gmail</th>
+    <th scope="col">Reason</th>
+      <th scope="col">Message</th>
+   
+    </tr>
+  </thead>
+  <tbody>
+  {% for contact in contact_info %}
+  <tr>
+  
+      <td>{{contact.gmail}}</td>
+      <td>{{contact.reason}}</td>
+      <td>{{contact.message}}</td>
+ 
+
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>
+           
+</div><br><br>
+
+{% endblock %}

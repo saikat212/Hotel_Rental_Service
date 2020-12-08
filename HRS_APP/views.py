@@ -31,7 +31,7 @@ def admin_home(request):
     
 
 def customer_home(request):
-    return render(request, "Homepage/CustomerHomePage.html")
+    return render(request, "Homepage/only_customer_home.html")
     
 
 
@@ -121,7 +121,7 @@ def submit(request):
             if decoded_password == password:
                 customer_info_dict={'customer_id':customer_id,'customer_f_name':customer_f_name,'customer_l_name':customer_l_name,'customer_gmail':customer_gmail,'customer_city':customer_city,'customer_country':customer_country,'customer_username':customer_username,'customer_password':customer_password}
                 customer_info_list.append(customer_info_dict)
-                return render(request, "Homepage/CustomerHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
+                return redirect("customer_home")
                 
             else:
                 return HttpResponse("Wrong Pass")
@@ -481,6 +481,23 @@ def view_details(request):
 def invoice(request):
     return render(request,"New_Booking/invoice.html")
 
+def contact_submit(request):
+    gmail=request.POST['gmail']
+    reason=request.POST['reason']
+    message=request.POST['message']
+
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+
+    statement = "INSERT INTO HRS_OURDATABASE.CONTACT(GMAIL,REASON,MESSAGE) VALUES (" + "\'" + gmail + \
+                    "\', " + "\'" + reason + "\'," + "\'" + message +"\'"+ ")"
+        
+    c.execute(statement)
+    conn.commit()
+    return redirect("customer_home")
+
+
 
 
 
@@ -611,9 +628,24 @@ def all_booking(request):
         reserved_room_id=x[8]
 
 
-        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'status':status,'booking_date':booking_date,'phone_number':phone_number}
         booking_info.append(row)
-    return render(request,"admin/all_booking.html",{'booking_info':booking_info})
+    
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT FIRST_NAME,LAST_NAME,GMAIL FROM HRS_OURDATABASE.CUSTOMER WHERE CUSTOMER_ID="+str(booking_customer_id)
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    for x in result:
+
+        fname=x[0]
+        lname=x[1]
+        gmail=x[2]
+    
+    
+    return render(request,"admin/all_booking.html",{'booking_info':booking_info,'name':fname+" "+lname,'gmail':gmail})
 def booking_modify(request):
     selected_reservation_id=request.POST['selected_reservation_id']
     modified_reservation_id.append(selected_reservation_id)
@@ -697,9 +729,23 @@ def approved_booking(request):
         reserved_room_id=x[8]
 
 
-        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'status':status,'booking_date':booking_date,'phone_number':phone_number}
         booking_info.append(row)
-    return render(request,"admin/approved_booking.html",{'booking_info':booking_info})
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT FIRST_NAME,LAST_NAME,GMAIL FROM HRS_OURDATABASE.CUSTOMER WHERE CUSTOMER_ID="+str(booking_customer_id)
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    for x in result:
+
+        fname=x[0]
+        lname=x[1]
+        gmail=x[2]
+    
+    
+    return render(request,"admin/approved_booking.html",{'booking_info':booking_info,'name':fname+" "+lname,'gmail':gmail})
 
 
 def pending_booking(request):
@@ -727,9 +773,23 @@ def pending_booking(request):
         reserved_room_id=x[8]
 
 
-        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'status':status,'booking_date':booking_date,'phone_number':phone_number}
         booking_info.append(row)
-    return render(request,"admin/pending_booking.html",{'booking_info':booking_info})
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT FIRST_NAME,LAST_NAME,GMAIL FROM HRS_OURDATABASE.CUSTOMER WHERE CUSTOMER_ID="+str(booking_customer_id)
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    for x in result:
+
+        fname=x[0]
+        lname=x[1]
+        gmail=x[2]
+    
+    
+    return render(request,"admin/pending_booking.html",{'booking_info':booking_info,'name':fname+" "+lname,'gmail':gmail})
 
 def cancelled_booking(request):
     dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
@@ -756,9 +816,23 @@ def cancelled_booking(request):
         reserved_room_id=x[8]
 
 
-        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'name':user_info['f_name']+" "+user_info['l_name'],'gmail':user_info['gmail'],'status':status,'booking_date':booking_date,'phone_number':phone_number}
+        row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'status':status,'booking_date':booking_date,'phone_number':phone_number}
         booking_info.append(row)
-    return render(request,"admin/cancelled_booking.html",{'booking_info':booking_info})
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT FIRST_NAME,LAST_NAME,GMAIL FROM HRS_OURDATABASE.CUSTOMER WHERE CUSTOMER_ID="+str(booking_customer_id)
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    for x in result:
+
+        fname=x[0]
+        lname=x[1]
+        gmail=x[2]
+    
+    
+    return render(request,"admin/cancelled_booking.html",{'booking_info':booking_info,'name':fname+" "+lname,'gmail':gmail})
     
 def add_room(request):
     return render(request,"admin/take_room_information.html")
@@ -865,11 +939,88 @@ def complete_update_room_info(request):
 
     
     
+#edited design
+
+def about(request):
+    return render(request, "Customer/about.html")
+
+def contact(request):
+    return render(request, "Customer/contact.html")
 
 
 
+def search_by_reservation_id(request):
+    searched_reservation_id=request.POST['searched_reservation_id']
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT * FROM HRS_OURDATABASE.RESERVATION WHERE RESERVATION_ID="+str(searched_reservation_id)
+    if statement:
+
+        c1.execute(statement)
+    
+        result = c1.fetchall()
+        c1.close()
+    
+        booking_info=[]
+        for x in result:
+            reservation_id=x[0]
+            checkin_date=x[1]
+            checkout_date=x[2]
+            booking_customer_id=x[3]
+            booking_date=x[4]
+
+            status=x[5]
+            phone_number=x[6]
+            guest_no=x[7]
+            reserved_room_id=x[8]
 
 
+            row={'reservation_id':reservation_id,'checkin_date':checkin_date,'checkout_date':checkout_date,'guest_no':guest_no,'status':status,'booking_date':booking_date,'phone_number':phone_number}
+            booking_info.append(row)
+        
+        dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+        conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+        c1 = conn.cursor()
+        statement = "SELECT FIRST_NAME,LAST_NAME,GMAIL FROM HRS_OURDATABASE.CUSTOMER WHERE CUSTOMER_ID="+str(booking_customer_id)
+        c1.execute(statement)
+    
+        result = c1.fetchall()
+        c1.close()
+        for x in result:
+
+            fname=x[0]
+            lname=x[1]
+            gmail=x[2]
+    
+    
+        return render(request,"admin/all_booking.html",{'booking_info':booking_info,'name':fname+" "+lname,'gmail':gmail})
+    else:
+        return render(request,"admin/not_found_msg.html")
+    
+
+def notification(request):
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c = conn.cursor()
+    statement="SELECT * FROM HRS_OURDATABASE.CONTACT"
+
+    c.execute(statement)
+    
+    result = c.fetchall()
+    c.close()
+    
+    contact_info=[]
+    for x in result:
+        gmail=x[0]
+        reason=x[1]
+        message=x[2]
+
+        row={'gmail':gmail,'reason':reason,'message':message}
+        contact_info.append(row)
+    return render(request,"admin/all_notification.html",{'contact_info':contact_info})
+
+    
 
     
 

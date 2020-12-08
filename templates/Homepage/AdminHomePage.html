@@ -63,13 +63,18 @@
           <a class="dropdown-item" href="pending_booking">Pending Booking</a>
           <a class="dropdown-item" href="cancelled_booking">Canceled Booking</a>
       </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" href="notification">Notification</a>
+      </li>
       <li></li>
       <li></li>
     </ul>
 
 
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <form action="search_by_reservation_id" method="post" class="form-inline my-2 my-lg-0">
+    {% csrf_token %}
+      <input name="searched_reservation_id" class="form-control mr-sm-2" type="search" placeholder="Enter reservation id" aria-label="Search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
 

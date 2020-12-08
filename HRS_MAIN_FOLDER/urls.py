@@ -30,7 +30,7 @@ urlpatterns = [
 
 
     #Customer Page Part
-    path('HOME', HRS_APP_views.customer_home, name='customer_home'),
+    path('customer_home', HRS_APP_views.customer_home, name='customer_home'),
 
     path('customer_profile',HRS_APP_views.customer_profile_details, name='profile'),
     path('booking_details',HRS_APP_views.my_booking_status, name='my_booking_status'),
@@ -49,6 +49,8 @@ urlpatterns = [
     path('confirm_book',HRS_APP_views.confirm_book, name='confirm_book'),
     path('view_details',HRS_APP_views.view_details, name='view_details'),
     path('invoice',HRS_APP_views.invoice, name='invoice'),
+    path('contact_submit',HRS_APP_views.contact_submit, name='contact_submit'),
+
 
 
 
@@ -83,13 +85,12 @@ urlpatterns = [
     path('complete_update_room_info', HRS_APP_views.complete_update_room_info, name='complete_update_room_info'),
 
 
+    path('about', HRS_APP_views.about, name='about'),
+    path('contact', HRS_APP_views.contact, name='contact'),
 
 
-
-
-
-
-
-   
+    path('search_by_reservation_id', HRS_APP_views.search_by_reservation_id, name='search_by_reservation_id'),
+    path('notification', HRS_APP_views.notification, name='notification'),
+    
 
 ]
