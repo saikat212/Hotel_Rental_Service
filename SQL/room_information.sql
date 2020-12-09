@@ -1,0 +1,23 @@
+CREATE OR REPLACE FUNCTION room_information(
+  input_room_type IN  HRS_OURDATABASE.ROOM.ROOM_TYPE%TYPE
+) RETURN HRS_OURDATABASE.ROOM%ROWTYPE
+AS
+ room_row_record HRS_OURDATABASE.ROOM%ROWTYPE;
+BEGIN
+  SELECT *
+  INTO   room_row_record
+  FROM   HRS_OURDATABASE.ROOM
+  WHERE  ROOM_TYPE=input_room_type
+
+  RETURN room_row_record;
+END;
+/
+/*
+DECLARE
+    RI  HRS_OURDATABASE.ROOM%ROWTYPE;
+BEGIN
+     RI := room_information("SINGLE_ROOM");
+		 DBMS_OUTPUT.PUT_LINE( RI.CAPACITY ||'  ' || RI.PRICE);
+END;
+/
+ */

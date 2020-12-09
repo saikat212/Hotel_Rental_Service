@@ -1,0 +1,22 @@
+CREATE OR REPLACE FUNCTION reservation_information(
+  input_reservation_id IN  HRS_OURDATABASE.RESERVATION.RESERVATION_ID%TYPE
+) RETURN HRS_OURDATABASE.RESERVATION%ROWTYPE
+AS
+ reservation_row_record HRS_OURDATABASE.RESERVATION%ROWTYPE;
+BEGIN
+  SELECT *
+  INTO   reservation_row_record
+  FROM   HRS_OURDATABASE.RESERVATION
+  WHERE  RESERVATION_ID=input_reservation_id
+
+  RETURN reservation_row_record;
+END;
+/
+/*
+DECLARE
+    
+BEGIN
+   
+END;
+/
+ */
