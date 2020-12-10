@@ -51,6 +51,9 @@ urlpatterns = [
     path('invoice',HRS_APP_views.invoice, name='invoice'),
     path('contact_submit',HRS_APP_views.contact_submit, name='contact_submit'),
 
+    path('filtering_page',HRS_APP_views.filtering_page, name='filtering_page'),
+    path('search_for_booking',HRS_APP_views.search_for_booking, name='search_for_booking'),
+
 
 
 
@@ -91,6 +94,10 @@ urlpatterns = [
 
     path('search_by_reservation_id', HRS_APP_views.search_by_reservation_id, name='search_by_reservation_id'),
     path('notification', HRS_APP_views.notification, name='notification'),
+
+
+
+    path('hotel_review', HRS_APP_views.hotel_review, name='hotel_review'),
     
 
 ]

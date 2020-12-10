@@ -29,7 +29,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'customer_home' %}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'hotel_review' %}">Home <span class="sr-only">(current)</span></a>
       </li>
       
 
@@ -44,22 +44,14 @@
           <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
       </li>
 
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="{% url 'customer_home' %}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          New Booking
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'single_room' %}">Single Room</a>
-          <a class="dropdown-item" href="{% url 'double_room' %}">Double Room</a>
-          <a class="dropdown-item" href="{% url 'triple_room' %}">Triple Room</a>
-          <a class="dropdown-item" href="{% url 'quad_room' %}">Quad Room</a>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'filtering_page' %}">New Booking</a>
       </li>
-
       <li class="nav-item">
         <a class="nav-link" href="{% url 'about' %}">Gallery</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        <a class="nav-link" href="{% url 'contact' %}">Feedback</a>
       </li>
       <li></li>
       <li></li>

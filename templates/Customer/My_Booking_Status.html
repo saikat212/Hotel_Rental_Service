@@ -18,6 +18,7 @@
       <th scope="col">Name</th>
       <th scope="col">Gmail</th>
       <th scope="col">Status</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -28,6 +29,13 @@
       <td>{{book.name}}</td>
       <td>{{book.gmail}}</td>
       <td>{{book.status}}</td>
+      <td>
+      <form action="view_details" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger wrn-btn">view_details</button>
+      <input type="hidden" id="{{book.reservation_id}}" name="reservation_id" value="{{book.reservation_id}}">
+      </form>
+      </td>
 
   </tr>
   {% endfor %}
@@ -36,16 +44,6 @@
 </table>        
 </div>
 
-<div>
-<form action="view_details" method="post">
-{% csrf_token %}
-    
-    
-     
-  <input type="number" name="selected_reservation_id" placeholder="Enter Reservation_id">
-
-  <button type="submit" class="btn btn-primary mb-2">View Details</button>
-</form></div>
 
 
 

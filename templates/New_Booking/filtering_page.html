@@ -1,0 +1,43 @@
+
+{% extends 'Homepage/CustomerHomePage.html' %}
+
+{% block content %}
+
+<form action="search_for_booking" method="post" >
+    {% csrf_token %}
+   
+
+    <div class="form-group">
+     <label for="Room Type">Room Type</label><br>
+            <select type="text" id="selected_room_type" name="selected_room_type" class="block">
+                <option selected disabled>SelectRoom Type</option>
+                <option value="SINGLE_ROOM" class="block">SINGLE_ROOM</option>
+                <option value="DOUBLE_ROOM" class="block">DOUBLE_ROOM</option>
+                <option value="TRIPLE_ROOM" class="block">TRIPLE_ROOM</option>
+                <option value="QUAD_ROOM" class="block">QUAD_ROOM</option>
+            </select>
+    
+
+    </div>
+   <div class="form-group">
+   <label for="d">CheckIn Date</label><br>
+      <input name="searched_checkin_date"  type="date" placeholder="CheckIn Date" id="d" >
+
+    </div>
+
+       <div class="form-group">
+         <label for="d1">CheckOut Date</label><br>
+      <input name="searched_checkout_date"  type="date" placeholder="CheckOut Date" id="d1" >
+
+    </div>
+
+     
+
+   
+      
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      
+</form>
+
+
+{% endblock %}

@@ -1,24 +1,129 @@
 {% extends 'Homepage/AdminHomePage.html' %}
 
 {% block content %}
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">Customer Information</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Gmail</th>
+      <th scope="col">City</th>
+      <th scope="col">Country</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for customer in customer_info %}
+  <tr>
+      <td>{{customer.name}}</td>
+      <td>{{customer.gmail}}</td>
+      <td>{{customer.city}}</td>
+      <td>{{customer.country}}</td>
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>
+           
+</div><br><br>
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">Booking Details</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Reservation_Id</th>
+      <th scope="col">Booking_date</th>
+      <th scope="col">Checkin_date</th>
+      <th scope="col">Checkout_date</th>
+      <th scope="col">Status</th>
+      
+
+    </tr>
+  </thead>
+  <tbody>
+  {% for book in booking_info %}
+  <tr>
+      <th scope="row">{{book.reservation_id}}</th>
+      <td>{{book.booking_date}}</td>
+      <td>{{book.checkin_date}}</td>
+      <td>{{book.checkout_date}}</td>
+      <td>{{book.status}}</td>
+    
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>
+           
+</div><br><br>
+
+
+
+<div>
+  <div class="container">
+    <h1 style="text-align:center;" class="display-4">Room Details</h1>
+  </div>
+</div>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Room Type</th>
+      <th scope="col">Capacity</th>
+      
+      <th scope="col">Price(Perday)</th>
+      <th scope="col">Total Bill for reservation(Taka)</th>
+      <th scope="col">Description</th>
+      <th scope="col">Building</th>
+      <th scope="col">Floor</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for room in room_info %}
+  <tr>
+      <th scope="row">{{room.room_type}}</th>
+      <td>{{room.capacity}}</td>
+     
+      <td>{{room.price}}</td>
+       <td>{{room.total_bill}}</td>
+      <td>{{room.description}}</td>
+      <td>{{room.building}}</td>
+      <td>{{room.floor}}</td>
+
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>
+           
+</div>
+
+
 
 <form action="edit_status" method="post">
 {% csrf_token %}
-    
-<div>
-<label for="room_availability">Room Availability Status</label>
-<input type="text" name="room_availability" id="room_availability" value="{{room_availability}}">
-</div><br>
 
-<div>Modified Status:
-            <label for="modified_status"></label><br>
+
+            <label for="modified_status">Modified Status:</label><br>
             <select id="modified_status" name="modified_status" class="block">
                 <option selected disabled>decision of admin </option>
                 <option value="PENDING" class="block">PENDING</option>
                 <option value="APPROVED" class="block">APPROVED</option>
                 <option value="CANCELLED" class="block">CANCELLED</option>
             </select>
-            </div><br>
+            <br>
 
   <button type="submit" class="btn btn-primary mb-2">Edit Status</button>
 </form></div>

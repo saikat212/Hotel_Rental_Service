@@ -1,6 +1,45 @@
+
 {% extends 'Homepage/CustomerHomePage.html' %}
 
 {% block content %}
+
+<form action="" method="post" >
+    {% csrf_token %}
+   
+
+    <div class="form-group">
+     <label for="Room Type">Room Type</label><br>
+            <select id="selected_room_type" name="selected_room_type" class="block">
+                <option selected disabled>SelectRoom Type</option>
+                <option value="SINGLE_ROOM" class="block">SINGLE_ROOM</option>
+                <option value="DOUBLE_ROOM" class="block">DOUBLE_ROOM</option>
+                <option value="TRIPLE_ROOM" class="block">TRIPLE_ROOM</option>
+                <option value="QUAD_ROOM" class="block">QUAD_ROOM</option>
+            </select>
+    
+
+    </div>
+   <div class="form-group">
+   <label for="d">CheckIn Date</label><br>
+      <input name="searched_checkin_date"  type="date" placeholder="CheckIn Date" id="d" >
+
+    </div>
+
+       <div class="form-group">
+         <label for="d1">CheckOut Date</label><br>
+      <input name="searched_checkout_date"  type="date" placeholder="CheckOut Date" id="d1" >
+
+    </div>
+
+     
+
+   
+      
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      
+</form>
+
+
 
 <div>
   <div class="container">
@@ -16,8 +55,9 @@
       <th scope="col">Room Type</th>
       <th scope="col">Price</th>
       <th scope="col">Capacity</th>
-      <th scope="col">Room Availability</th>
       <th scope="col">Description</th>
+      <th scope="col">Action</th>
+
     </tr>
   </thead>
   <tbody>
@@ -27,8 +67,14 @@
       <th scope="row">{{room.room_type}}</th>
       <td>{{room.price}}</td>
       <td>{{room.capacity}}</td>
-      <td>{{room.room_availability}}</td>
       <td>{{room.description}}</td>
+      <td>
+      <form action="confirm_book" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger wrn-btn">BOOK</button>
+      <input type="hidden" id="{{room.room_id}}" name="room_id" value="{{room.room_id}}">
+      </form>
+      </td>
       
 
   </tr>
@@ -37,15 +83,6 @@
   </tbody>
 </table>        
 </div>
-<div>
-<form action="book" method="post">
-{% csrf_token %}
-    
-    
-     
-  <input type="number" name="selected_room_id" placeholder="Booking Room_id">
 
-  <button type="submit" class="btn btn-primary mb-2">Book</button>
-</form></div>
 
 {% endblock %}
