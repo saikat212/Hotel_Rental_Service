@@ -109,7 +109,7 @@ body {
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'admin_home' %}">Go Back</a>
+        <a class="nav-link" href="{% url 'login' %}">Go Back</a>
       </li>
       </ul>
       </div>
@@ -141,7 +141,8 @@ body {
 <span class="fa fa-star checked"></span>
 <span class="fa fa-star checked"></span>
 <span class="fa fa-star"></span>
-<p>4.1 average based on 254 reviews.</p>
+<p>4.1 average based on 154 reviews.</p>
+
 <hr style="border:3px solid #f1f1f1">
 
 <div class="row">
@@ -154,7 +155,7 @@ body {
     </div>
   </div>
   <div class="side right">
-    <div>150</div>
+    <div>74</div>
   </div>
   <div class="side">
     <div>4 star</div>
@@ -165,7 +166,7 @@ body {
     </div>
   </div>
   <div class="side right">
-    <div>63</div>
+    <div>40</div>
   </div>
   <div class="side">
     <div>3 star</div>
@@ -176,7 +177,7 @@ body {
     </div>
   </div>
   <div class="side right">
-    <div>15</div>
+    <div>20</div>
   </div>
   <div class="side">
     <div>2 star</div>
@@ -187,7 +188,7 @@ body {
     </div>
   </div>
   <div class="side right">
-    <div>6</div>
+    <div>15</div>
   </div>
   <div class="side">
     <div>1 star</div>
@@ -198,9 +199,77 @@ body {
     </div>
   </div>
   <div class="side right">
-    <div>20</div>
+    <div>5</div>
   </div>
+</div><br><br><br>
+
+<div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+
+      <th scope="col">Ratings</th>
+
+      <th scope="col">Feedback</th>
+      <th scope="col">Date of Feedback</th>
+   
+    </tr>
+  </thead>
+  <tbody>
+  {% for info in feedback_info %}
+  <tr>
+      <th scope="row">{{info.name}}</th>
+      <td>
+      
+      {% if info.rating == 5 %}
+      <span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+      {% endif %}
+
+      {% if info.rating == 4 %}
+      <span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star"></span>
+      {% endif %}
+
+      {% if info.rating == 3 %}
+      <span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star "></span>
+<span class="fa fa-star "></span>
+      {% endif %}
+
+      {% if info.rating == 2 %}
+      <span class="fa fa-star checked"></span>
+<span class="fa fa-star checked"></span>
+<span class="fa fa-star "></span>
+<span class="fa fa-star"></span>
+<span class="fa fa-star "></span>
+      {% endif %}
+      {% if info.rating == 1 %}
+      <span class="fa fa-star checked"></span>
+<span class="fa fa-star "></span>
+<span class="fa fa-star "></span>
+<span class="fa fa-star "></span>
+<span class="fa fa-star "></span>
+      {% endif %}
+      </td>
+      <td>{{info.msg}}</td>
+      <td>{{info.date_of_feedback}}</td>
+  </tr>
+  {% endfor %}
+    
+  </tbody>
+</table>        
 </div>
+
 
 
 

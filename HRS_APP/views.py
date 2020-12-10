@@ -341,7 +341,6 @@ def search_for_booking(request):
             description=x[0]
             capacity=x[1]
             price=x[2]
-            room_availability=x[3]
             room_type=x[4]
             room_id=x[5]
            
@@ -684,7 +683,27 @@ def update_admin_password(request):
         return HttpResponse("Provide correct password of previous")
 
 def hotel_review(request):
-    return render(request,"Homepage/hotel_review.html")
+    dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+    c1 = conn.cursor()
+    statement = "SELECT * FROM HRS_OURDATABASE.FEEDBACK ORDER BY DATE_OF_FEEDBACK ASC"
+    c1.execute(statement)
+    
+    result = c1.fetchall()
+    c1.close()
+    
+    feedback_info=[]
+    for x in result:
+        msg=x[1]
+        rating=x[2]
+        name=x[3]
+        date_of_feedback=x[4]
+
+       
+        row={'msg':msg,'rating':rating,'name':name,'date_of_feedback':date_of_feedback}
+        feedback_info.append(row)
+
+    return render(request,"Homepage/hotel_review.html",{'feedback_info':feedback_info})
 
 # Booking management in admin
 
@@ -968,7 +987,7 @@ def complete_add_room(request):
     capacity=request.POST['capacity']
     number_of_bed=request.POST['number_of_bed']
     price=request.POST['price']
-    room_availability=request.POST['room_availability']
+   
     description=request.POST['description']
 
 
@@ -976,8 +995,8 @@ def complete_add_room(request):
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
     c = conn.cursor()
         
-    statement = "INSERT INTO HRS_OURDATABASE.ROOM(BUILDING,FLOOR,CAPACITY,NUMBER_OF_BED,PRICE,ROOM_AVAILABILITY,ROOM_TYPE,DESCRIPTION) VALUES (" + "\'" + str(building) + \
-                    "\', " + "\'" + str(floor) + "\'," + "\'" +str(capacity)+ "\', " + "\'" +str(number_of_bed) + "\', " + "\'" + str(price) + "\'," + "\'" + room_availability + "\', " + "\'" +room_type+ "\'," + "\'" +description+ "\'" ")"
+    statement = "INSERT INTO HRS_OURDATABASE.ROOM(BUILDING,FLOOR,CAPACITY,NUMBER_OF_BED,PRICE,ROOM_TYPE,DESCRIPTION) VALUES (" + "\'" + str(building) + \
+                    "\', " + "\'" + str(floor) + "\'," + "\'" +str(capacity)+ "\', " + "\'" +str(number_of_bed) + "\', " + "\'" + str(price) + "\',"  + "\'" +room_type+ "\'," + "\'" +description+ "\'" ")"
         
     c.execute(statement)
     conn.commit()
@@ -1004,12 +1023,11 @@ def manage_room(request):
         capacity=x[3]
         number_of_bed=x[4]
         price=x[5]
-        room_availability=x[6]
-        room_type=x[7]
-        description=x[8]
-        img_code=x[9]
+        room_type=x[6]
+        description=x[7]
+        img_code=x[8]
 
-        row={'room_id':room_id,'building':building,'floor':floor,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'room_availability':room_availability,'room_type':room_type,'description':description}
+        row={'room_id':room_id,'building':building,'floor':floor,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'room_type':room_type,'description':description}
         room_info.append(row)
     return render(request,"admin/all_room_information.html",{'room_info':room_info})
 def update_room_info(request):
@@ -1034,12 +1052,11 @@ def update_room_info(request):
         capacity=x[3]
         number_of_bed=x[4]
         price=x[5]
-        room_availability=x[6]
-        room_type=x[7]
-        description=x[8]
-        img_code=x[9]
+        room_type=x[6]
+        description=x[7]
+        img_code=x[8]
 
-    return render(request,"admin/room_editing_page.html",{'room_id':room_id,'building':building,'floor':floor,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'room_availability':room_availability,'room_type':room_type,'description':description})
+    return render(request,"admin/room_editing_page.html",{'room_id':room_id,'building':building,'floor':floor,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'room_type':room_type,'description':description})
 
 def complete_update_room_info(request):
 
