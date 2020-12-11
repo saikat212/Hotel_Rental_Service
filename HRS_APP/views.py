@@ -385,12 +385,16 @@ def update_your_password(request):
 
             c.execute(statement)
             conn.commit()
-            return render(request, "Homepage/CustomerHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
+            return render(request, "Homepage/CustomerHomePage.html")
         else:
-            return HttpResponse("Give similiar Password with new password")
+            messages.error(request,'New and Confirm Password does not match')
+            return redirect("customer_change_password")
+    
     else:
-        return HttpResponse("Provide correct password of previous")
 
+
+        messages.error(request,'Wrong Current Password !!')
+        return redirect("customer_change_password")
 
 def logout(request):
     user_info.clear()
