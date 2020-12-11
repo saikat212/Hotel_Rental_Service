@@ -101,6 +101,9 @@ urlpatterns = [
 
 
     path('forgot_password', HRS_APP_views.forgot_password, name='forgot_password'),
+    path('reset_password', HRS_APP_views.reset_password, name='reset_password'),
+    path('update_reset_password', HRS_APP_views.update_reset_password, name='update_reset_password'),
+
     
 
 ]

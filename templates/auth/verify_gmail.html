@@ -47,19 +47,25 @@
 <form action="reset_password" method="post">
 
 {% csrf_token %}
+  <div>
   <label for="usertype"></label><br>
             <select id="usertype" name="usertype" class="block">
                 <option selected disabled>Select User Type</option>
                 <option value="customer" class="block">Customer</option>
                 <option value="admin" class="block">Admin</option>
             </select>
+    </div><br><br>
+
     <div class="form-group row">
     <label for="G" class="col-sm-2 col-form-label">Gmail</label>
+
     <div class="col-sm-10">
-      <input type="email" name="gmail" class="form-control" id="G" value="{{gmail}}">
+
+    <input type="email" name="gmail" class="form-control" id="G" value="{{gmail}}">
     </div>
-   <button class="block" type="submit">Verify</button>
-            </h1><br>
+    
+    
+   <button class="btn btn-primary" type="submit">  Verify</button>
             
 </form>       
 </div>

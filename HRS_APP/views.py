@@ -237,7 +237,39 @@ def reset_password(request):
 def update_reset_password(request):
     new_password=request.POST['new_password']
     confirm_password=request.POST['confirm_password']
-    
+    if new_password==confirm_password:
+        if verified_usertype[0]=='admin':
+            dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+            conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+            c = conn.cursor()
+            new_encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(confirm_password).encryptPassword()
+
+            statement = "UPDATE HRS_OURDATABASE.ADMIN SET PASSWORD = " + "\'" + new_encoded_password + "\'" + "WHERE GMAIL = " +"\'"+verified_gmail[0]+"\'"
+           
+
+            c.execute(statement)
+            conn.commit()
+
+        if verified_usertype[0]=='customer':
+            dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
+            conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+            c = conn.cursor()
+            new_encoded_password=ED_Operation.Encrypt_Decrypt_Passwords(confirm_password).encryptPassword()
+
+            statement = "UPDATE HRS_OURDATABASE.CUSTOMER SET PASSWORD = " + "\'" + new_encoded_password + "\'" + "WHERE GMAIL = " +"\'"+verified_gmail[0]+"\'"
+           
+
+            c.execute(statement)
+            conn.commit()
+        verified_usertype.clear()
+        verified_gmail.clear()
+        return redirect("login")
+    else:
+        
+        return render(request,"auth/reset_password_page.html")
+
+        
+
 
 
 
@@ -758,7 +790,7 @@ def hotel_review(request):
         msg=x[1]
         rating=x[2]
         name=x[3]
-        date_of_feedback=x[4]
+        date_of_feedback=(x[4]).date()
 
        
         row={'msg':msg,'rating':rating,'name':name,'date_of_feedback':date_of_feedback}
