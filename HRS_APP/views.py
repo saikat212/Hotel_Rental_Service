@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render,redirect
 import cx_Oracle
 
+from django.contrib import messages
+
 import HelperClass.Encrypt_Decrypt_Pass as ED_Operation
 import datetime
 
@@ -17,6 +19,8 @@ updated_room_id=[]
 selected_reservation_id_in_view_details=[]
 input_checkin_date=[]
 input_checkout_date=[]
+verified_gmail=[]
+verified_usertype=[]
 
 
 # Create your views here.
@@ -30,7 +34,7 @@ def signup(request):
 
 # homepage URLs
 def admin_home(request):
-    return render(request, "Homepage/AdminHomePage.html", {'name': user_info['f_name'] + ' ' + user_info['l_name']})
+    return render(request, "Homepage/AdminHomePage.html")
     
 
 def customer_home(request):
@@ -56,8 +60,8 @@ def submit(request):
     if usertype == "admin":
         statement = "SELECT ADMIN_ID,PASSWORD,FIRST_NAME, LAST_NAME,GMAIL,CITY,COUNTRY from HRS_OURDATABASE.ADMIN WHERE USERNAME=" + "\'" + username + "\'"
         c.execute(statement)
-        if c:
-            x = c.fetchone()
+        x = c.fetchone()
+        if x is not None:
             admin_id = x[0]
             return_password = x[1]
             admin_f_name = x[2]
@@ -91,16 +95,22 @@ def submit(request):
                 return render(request, "Homepage/AdminHomePage.html",{'name': user_info['f_name'] + ' ' + user_info['l_name']})
                 
             else:
-                return HttpResponse("Wrong Pass")
+                 messages.error(request,'username or password or usertype not correct')
+                 return redirect("login")
+
+                
         else:
-            return HttpResponse("Database Error or You don't exist")
+
+            messages.error(request,'username or password or usertype not correct')
+            return redirect("login")
 
     elif usertype == "customer":
         statement = "SELECT CUSTOMER_ID, PASSWORD, FIRST_NAME, LAST_NAME,GMAIL,CITY,COUNTRY from HRS_OURDATABASE.CUSTOMER WHERE USERNAME=" + "\'" + username + "\'"
        
         c.execute(statement)
-        if c:
-            x = c.fetchone()
+
+        x = c.fetchone()
+        if x is not None:
             
             customer_id = x[0]
             return_password = x[1]
@@ -128,9 +138,14 @@ def submit(request):
                 return redirect("customer_home")
                 
             else:
-                return HttpResponse("Wrong Pass")
+
+                messages.error(request,'username or password or usertype not correct')
+                return redirect("login")
         else:
-            return HttpResponse("Database Error or You don't exist")
+            messages.error(request,'username or password or usertype not correct')
+            return redirect("login")
+           
+           
     return render(request, "auth/LogInOrSignUp.html")
 
 
@@ -179,6 +194,53 @@ def signupSubmit(request):
         conn.commit()
         
     return redirect("login")
+
+
+def forgot_password(request):
+    return render(request,"auth/verify_gmail.html")
+def reset_password(request):
+    gmail=request.POST['gmail']
+    usertype=request.POST['usertype']
+    verified_gmail.append(gmail)
+    verified_usertype.append(usertype)
+
+
+    dsn_tns = cx_Oracle.makedsn('localhost', '1521', service_name='xe')
+    conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
+
+    c = conn.cursor()
+    if usertype == "admin":
+        statement = "SELECT ADMIN_ID from HRS_OURDATABASE.ADMIN WHERE GMAIL=" + "\'" + gmail + "\'"
+        c.execute(statement)
+        x = c.fetchone()
+        if x is not None:
+
+            return render(request,"auth/reset_password_page.html")
+        else:
+            verified_gmail.clear()
+            verified_usertype.clear()
+            return redirect("signup")
+    if usertype == "customer":
+        statement = "SELECT CUSTOMER_ID from HRS_OURDATABASE.CUSTOMER WHERE GMAIL=" + "\'" + gmail + "\'"
+        c.execute(statement)
+        x = c.fetchone()
+        if x is not None:
+
+            return render(request,"auth/reset_password_page.html")
+        else:
+            verified_gmail.clear()
+            verified_usertype.clear()
+            return redirect("signup")
+
+
+
+def update_reset_password(request):
+    new_password=request.POST['new_password']
+    confirm_password=request.POST['confirm_password']
+    
+
+
+
 #CustomerHome 
 def customer_profile_details(request):
     
@@ -332,7 +394,7 @@ def search_for_booking(request):
         dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
         conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
         c = conn.cursor()
-        statement="SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_AVAILABILITY,ROOM_TYPE,ROOM_ID FROM HRS_OURDATABASE.ROOM WHERE ROOM_ID="+str(available_room_id)
+        statement="SELECT DESCRIPTION,CAPACITY,PRICE,ROOM_TYPE,ROOM_ID FROM HRS_OURDATABASE.ROOM WHERE ROOM_ID="+str(available_room_id)
         c.execute(statement)
         result = c.fetchall()
         c.close()
@@ -341,8 +403,8 @@ def search_for_booking(request):
             description=x[0]
             capacity=x[1]
             price=x[2]
-            room_type=x[4]
-            room_id=x[5]
+            room_type=x[3]
+            room_id=x[4]
            
             row={'room_id':room_id,'room_type':room_type,'description':description,'capacity':capacity,'price':price}
 
@@ -358,7 +420,7 @@ def single_room(request):
     c = conn.cursor()
     RoomType = "SINGLE_ROOM"
     
-    statement = "SELECT ROOM_ID from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
+    statement = "SELECT * from HRS_OURDATABASE.ROOM WHERE ROOM_TYPE=" + "\'" + RoomType+ "\'"
     c.execute(statement)
     result = c.fetchall()
     c.close()
@@ -370,11 +432,11 @@ def single_room(request):
         description=x[0]
         capacity=x[1]
         price=x[2]
-        room_availability=x[3]
-        image_code=x[4]
-        room_id=x[5]
+    
+        image_code=x[3]
+        room_id=x[4]
         room_type="SINGLE_ROOM"
-        row={'room_id':room_id,'room_type':room_type,'description':description,'capacity':capacity,'price':price,'room_availability':room_availability,'image_code':image_code}
+        row={'room_id':room_id,'room_type':room_type,'description':description,'capacity':capacity,'price':price,'image_code':image_code}
 
         dict_result.append(row)
     return render(request,"New_Booking/room_details.html",{'room_info':dict_result})
@@ -535,10 +597,9 @@ def view_details(request):
         number_of_bed=x[4]
 
         price=x[5]
-        room_availability=x[6]
-        room_type=x[7]
-        description=x[8]
-        image_code=x[9]
+        room_type=x[6]
+        description=x[7]
+        image_code=x[8]
         total_bill=int(total_day*price)
         row={'room_type':room_type,'capacity':capacity,'number_of_bed':number_of_bed,'price':price,'building':building,'floor':floor,'description':description,'image_code':image_code,'total_bill':total_bill}
         room_info.append(row)
@@ -720,10 +781,11 @@ def all_booking(request):
     booking_info=[]
     for x in result:
         reservation_id=x[0]
-        checkin_date=x[1]
-        checkout_date=x[2]
+        checkin_date=(x[1]).date()
+        checkout_date=(x[2]).date()
         booking_customer_id=x[3]
-        booking_date=x[4]
+       
+        booking_date=(x[4]).date()
 
         status=x[5]
         phone_number=x[6]
@@ -765,14 +827,14 @@ def booking_modify(request):
     booking_info=[]
     for x in result:
         reservation_id=x[0]
-        checkin_date=x[1]
-        checkout_date=x[2]
+        checkin_date=(x[1]).date()
+        checkout_date=(x[2]).date()
         booking_customer_id=x[3]
         total_day_in_date_formate=checkout_date-checkin_date
         total_day=total_day_in_date_formate.days
-        bin=x[4]
         
-        booking_date=bin
+        
+        booking_date=(x[4]).date()
 
         status=x[5]
         phone_number=x[6]
@@ -800,10 +862,10 @@ def booking_modify(request):
         number_of_bed=x[4]
 
         price=x[5]
-        room_availability=x[6]
-        room_type=x[7]
-        description=x[8]
-        image_code=x[9]
+        
+        room_type=x[6]
+        description=x[7]
+        image_code=x[8]
         total_bill=int(total_day*price)
         row={'room_type':room_type,'capacity':capacity,'price':price,'building':building,'floor':floor,'description':description,'total_bill':total_bill}
         room_info.append(row)
@@ -864,10 +926,10 @@ def approved_booking(request):
     booking_info=[]
     for x in result:
         reservation_id=x[0]
-        checkin_date=x[1]
-        checkout_date=x[2]
+        checkin_date=(x[1]).date()
+        checkout_date=(x[2]).date()
         booking_customer_id=x[3]
-        booking_date=x[4]
+        booking_date=(x[4]).date()
 
         status=x[5]
         phone_number=x[6]
@@ -907,10 +969,10 @@ def pending_booking(request):
     booking_info=[]
     for x in result:
         reservation_id=x[0]
-        checkin_date=x[1]
-        checkout_date=x[2]
+        checkin_date=(x[1]).date()
+        checkout_date=(x[2]).date()
         booking_customer_id=x[3]
-        booking_date=x[4]
+        booking_date=(x[4]).date()
 
         status=x[5]
         phone_number=x[6]
@@ -950,10 +1012,10 @@ def cancelled_booking(request):
     booking_info=[]
     for x in result:
         reservation_id=x[0]
-        checkin_date=x[1]
-        checkout_date=x[2]
+        checkin_date=(x[1]).date()
+        checkout_date=(x[2]).date()
         booking_customer_id=x[3]
-        booking_date=x[4]
+        booking_date=(x[4]).date()
 
         status=x[5]
         phone_number=x[6]
@@ -987,7 +1049,6 @@ def complete_add_room(request):
     capacity=request.POST['capacity']
     number_of_bed=request.POST['number_of_bed']
     price=request.POST['price']
-   
     description=request.POST['description']
 
 
@@ -1031,12 +1092,13 @@ def manage_room(request):
         room_info.append(row)
     return render(request,"admin/all_room_information.html",{'room_info':room_info})
 def update_room_info(request):
-    updated_room_id.append(request.POST['updated_room_id'])
+    update_room_id=request.POST['room_id']
+    updated_room_id.append(update_room_id)
 
     dsn_tns=cx_Oracle.makedsn('localhost','1521',service_name='xe')
     conn = cx_Oracle.connect(user='HRS_OURDATABASE', password='12345', dsn=dsn_tns)
     c = conn.cursor()
-    statement="SELECT * FROM HRS_OURDATABASE.ROOM WHERE ROOM_ID="+str(updated_room_id[0])
+    statement="SELECT * FROM HRS_OURDATABASE.ROOM WHERE ROOM_ID="+str(update_room_id)
 
     c.execute(statement)
     

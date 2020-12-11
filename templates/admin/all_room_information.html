@@ -4,7 +4,7 @@
 
 <div>
   <div class="container">
-    <h1 style="text-align:center;" class="display-4">All Room Information of Hotel</h1>
+    <h4 style="text-align:center;" class="display-4">All Room Information of Hotel</h4>
   </div>
 </div>
 
@@ -20,6 +20,7 @@
       <th scope="col">Floor</th>
       <th scope="col">Price</th>
       <th scope="col">Description</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -33,6 +34,14 @@
       <td>{{room.floor}}</td>
       <td>{{room.price}}</td>
       <td>{{room.description}}</td>
+      
+      <td>
+      <form action="update_room_info" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-danger wrn-btn">Modify</button>
+      <input type="hidden" id="{{room.room_id}}" name="room_id" value="{{room.room_id}}">
+      </form>
+      </td>
 
 
   </tr>
@@ -42,15 +51,4 @@
 </table>
            
 </div><br><br>
-
-<form action="update_room_info" method="post">
-{% csrf_token %}
-    
-    
-     
-  <input type="number" name="updated_room_id" placeholder="Enter room_id">
-
-  <button type="submit" class="btn btn-primary mb-2">Room Info Modify</button>
-</form></div>
-
 {% endblock %}

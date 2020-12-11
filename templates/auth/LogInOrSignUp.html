@@ -15,7 +15,6 @@
             </h1>
     
 
-        
         <h1>Sign In or  <a href="{% url 'signup' %}">Sign Up</a> </h1>
 
 
@@ -34,11 +33,22 @@
                 <option value="customer" class="block">Customer</option>
                 <option value="admin" class="block">Admin</option>
             </select>
-            </h1><br>
+            </h1>
+
+            {% for message in messages %}
+
+                    <h4 style="text-align:center;">
+                       
+                        {{ message }}
+
+                    <h4>
+            {% endfor %}
             <h1>
                <button class="block" type="submit">Submit</button>
 
             </h1>
         </form>
+<p style="text-align:center;"> <a href="" style="text-color:red;" >Forgot <span style="text-color:green;"> Password ?</span></a></p>
+       
     </body>
 </html>

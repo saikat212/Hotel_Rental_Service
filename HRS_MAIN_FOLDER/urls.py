@@ -98,6 +98,9 @@ urlpatterns = [
 
 
     path('hotel_review', HRS_APP_views.hotel_review, name='hotel_review'),
+
+
+    path('forgot_password', HRS_APP_views.forgot_password, name='forgot_password'),
     
 
 ]
